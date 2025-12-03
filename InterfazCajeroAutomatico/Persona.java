@@ -1,4 +1,5 @@
 package InterfazCajeroAutomatico;
+
 public class Persona {
 
     private String nombre;
@@ -11,7 +12,7 @@ public class Persona {
         this.dni = dni;
     }
 
-    // Getters y Setters
+     
     public String getNombre() {
         return nombre;
     }

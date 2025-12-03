@@ -1,5 +1,7 @@
 package InterfazCajeroAutomatico;
+
 public class CuentaCorriente extends Cuenta {
+
     private double descubiertoPermitido;
 
     public CuentaCorriente(String numero, double saldoInicial, double descubiertoPermitido) {
@@ -9,13 +11,21 @@ public class CuentaCorriente extends Cuenta {
 
     @Override
     public boolean extraer(double monto) {
-        if (monto <= (saldo + descubiertoPermitido)) {
-            saldo -= monto;
+        if (monto <= (getSaldo() + descubiertoPermitido)) {
+            setSaldo(getSaldo() - monto);
             return true;
         }
         return false;
     }
-    
+
+    public double getDescubiertoPermitido() {
+        return descubiertoPermitido;
+    }
+
+    public void setDescubiertoPermitido(double descubiertoPermitido) {
+        this.descubiertoPermitido = descubiertoPermitido;
+    }
+
     @Override
     public String toString() {
         return super.toString() + " (CC - Descubierto: " + descubiertoPermitido + ")";

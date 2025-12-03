@@ -1,8 +1,9 @@
 package InterfazCajeroAutomatico;
 
-public abstract class Cuenta {
-    protected String numero;
-    protected double saldo;
+public class Cuenta {
+
+    private String numero;
+    private double saldo;
 
     public Cuenta(String numero, double saldoInicial) {
         this.numero = numero;
@@ -23,7 +24,17 @@ public abstract class Cuenta {
         }
     }
 
-    public boolean extraer(double monto){return false; } 
+    public boolean extraer(double monto) {
+        return false;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
 
     @Override
     public String toString() {

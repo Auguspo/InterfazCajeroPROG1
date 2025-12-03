@@ -1,8 +1,9 @@
-
 package InterfazCajeroAutomatico;
+
 public class Banco {
+
     private String nombre;
-    private Usuario[] usuarios; 
+    private Usuario[] usuarios;
     private int cantUsuarios;
 
     public Banco(String nombre, int capacidad) {
@@ -32,19 +33,18 @@ public class Banco {
     public void ordenarUsuariosPorNumero() {
         for (int i = 0; i < cantUsuarios - 1; i++) {
             for (int j = 0; j < cantUsuarios - i - 1; j++) {
-               
-                if (usuarios[j].getNroUsuario().compareTo(usuarios[j+1].getNroUsuario()) > 0) {
-                    
+
+                if (usuarios[j].getNroUsuario().compareTo(usuarios[j + 1].getNroUsuario()) > 0) {
+
                     Usuario temp = usuarios[j];
-                    usuarios[j] = usuarios[j+1];
-                    usuarios[j+1] = temp;
+                    usuarios[j] = usuarios[j + 1];
+                    usuarios[j + 1] = temp;
                 }
             }
         }
         System.out.println("Usuarios ordenados por número de cuenta (ID).");
     }
 
-    
     public Usuario buscarUsuarioBinaria(String nroCuenta) {
         int inicio = 0;
         int fin = cantUsuarios - 1;
@@ -54,11 +54,11 @@ public class Banco {
             int comparacion = usuarios[medio].getNroUsuario().compareTo(nroCuenta);
 
             if (comparacion == 0) {
-                return usuarios[medio]; 
+                return usuarios[medio];
             } else if (comparacion < 0) {
-                inicio = medio + 1; 
+                inicio = medio + 1;
             } else {
-                fin = medio - 1; 
+                fin = medio - 1;
             }
         }
         return null;
@@ -72,5 +72,29 @@ public class Banco {
         for (int i = 0; i < cantUsuarios; i++) {
             System.out.println(usuarios[i].toString());
         }
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Usuario[] getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(Usuario[] usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public int getCantUsuarios() {
+        return cantUsuarios;
+    }
+
+    public void setCantUsuarios(int cantUsuarios) {
+        this.cantUsuarios = cantUsuarios;
     }
 }

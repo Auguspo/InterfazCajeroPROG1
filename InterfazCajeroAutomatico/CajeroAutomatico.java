@@ -1,5 +1,7 @@
 package InterfazCajeroAutomatico;
+
 public class CajeroAutomatico {
+
     private Banco banco;
     private double efectivoDisponible;
 
@@ -42,9 +44,25 @@ public class CajeroAutomatico {
     public double consultarSaldo(Cuenta c) {
         return c.getSaldo();
     }
-    
+
     public void cargarEfectivo(double monto) {
         this.efectivoDisponible += monto;
         System.out.println("Cajero recargado. Total disponible: " + efectivoDisponible);
+    }
+
+    public Banco getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Banco banco) {
+        this.banco = banco;
+    }
+
+    public double getEfectivoDisponible() {
+        return efectivoDisponible;
+    }
+
+    public void setEfectivoDisponible(double efectivoDisponible) {
+        this.efectivoDisponible = efectivoDisponible;
     }
 }

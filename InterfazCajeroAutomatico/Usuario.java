@@ -1,12 +1,13 @@
 package InterfazCajeroAutomatico;
 
 public class Usuario extends Persona {
-    private String nroCuenta; 
+
+    private String nroCuenta;
     private int pin;
     private String estado;
     private boolean admin;
     private Cuenta[] cuentas;
-    private int cantCuentas; 
+    private int cantCuentas;
 
     public Usuario(String nombre, String apellido, String dni, String nroCuenta, int pin, String estado, boolean admin) {
         super(nombre, apellido, dni);
@@ -14,7 +15,7 @@ public class Usuario extends Persona {
         this.pin = pin;
         this.estado = estado;
         this.admin = admin;
-        this.cuentas = new Cuenta[5]; 
+        this.cuentas = new Cuenta[5];
         this.cantCuentas = 0;
     }
 
@@ -52,11 +53,45 @@ public class Usuario extends Persona {
         this.pin = nuevoPin;
     }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public String getEstado() {
+        return estado;
+    }
 
-    public boolean esAdmin() { return admin; }
-    public String getNroUsuario() { return nroCuenta; } 
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public boolean esAdmin() {
+        return admin;
+    }
+
+    public String getNroUsuario() {
+        return nroCuenta;
+    }
+
+    public String getNroCuenta() {
+        return nroCuenta;
+    }
+
+    public void setNroCuenta(String nroCuenta) {
+        this.nroCuenta = nroCuenta;
+    }
+
+    public int getPin() {
+        return pin;
+    }
+
+    public void setPin(int pin) {
+        this.pin = pin;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 
     @Override
     public String toString() {
