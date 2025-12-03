@@ -3,9 +3,6 @@ package InterfazCajeroAutomatico;
 import javax.swing.JOptionPane;
 
 
-//opcion de revisar cajeros automáticos
-
-
 public class Menu {
 
     private Banco banco;
@@ -22,9 +19,13 @@ public class Menu {
         u1.agregarCuenta(new CajaAhorro("CA-001", 5000, 2000));
         u1.agregarCuenta(new CuentaCorriente("CC-001", 1000, 5000));
 
+        Usuario u2 = new Usuario("Ana", "Gomez", "87654321", "user2", 4321, "Activo", false); 
+        u2.agregarCuenta(new CajaAhorro("CA-002", 7000, 3000));
+        
         Usuario admin = new Usuario("Admin", "Sist", "0000", "admin", 9999, "Activo", true);
 
         banco.agregarUsuario(u1);
+        banco.agregarUsuario(u2);
         banco.agregarUsuario(admin);
     }
 
@@ -128,16 +129,23 @@ public class Menu {
                             String extStr = JOptionPane.showInputDialog("Monto a extraer:");
                             if (extStr != null) {
                                 double ext = Double.parseDouble(extStr);
-                                boolean exito = cajero.extraer(u, cuentaActual, ext);
-                                if (exito) {
-                                    JOptionPane.showMessageDialog(null, "Extracción exitosa. Retire su dinero.");
-                                } else {
-                                    JOptionPane.showMessageDialog(null, "Saldo insuficiente o límite excedido.", "Error", JOptionPane.ERROR_MESSAGE);
+                                
+                                int status = cajero.extraer(u, cuentaActual, ext);
+
+                                switch (status) {
+                                    case 0:
+                                        JOptionPane.showMessageDialog(null, "Extracción exitosa. Retire su dinero.");
+                                        break;
+                                    case 1:
+                                        JOptionPane.showMessageDialog(null, "El cajero no tiene suficiente efectivo.", "Error", JOptionPane.ERROR_MESSAGE);
+                                        break;
+                                    case 2:
+                                        JOptionPane.showMessageDialog(null, "Saldo insuficiente o límite excedido.", "Error", JOptionPane.ERROR_MESSAGE);
+                                        break;
                                 }
                             }
                             break;
                         case 9:
-
                             break;
                         case 0:
                             JOptionPane.showMessageDialog(null, "Cerrando sesión...");
@@ -148,6 +156,8 @@ public class Menu {
                     }
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido.");
+                } catch (NullPointerException e) {
+                    JOptionPane.showMessageDialog(null, "Operación cancelada o valor no válido.");
                 }
             }
         }
@@ -158,9 +168,11 @@ public class Menu {
         while (opcion != 0) {
             try {
                 String menu = "--- Menú Administrador ---\n"
-                        + "1. Listar Usuarios (Ver Consola)\n"
+                        + "1. Listar Usuarios\n"
                         + "2. Ordenar Usuarios (Burbujeo)\n"
-                        + "3. Cargar efectivo al Cajero\n"
+                        + "3. Ordenar Usuarios (Selección)\n" 
+                        + "4. Cargar efectivo al Cajero\n"
+                        + "5. Consultar Efectivo Cajero\n"
                         + "0. Salir\n\n"
                         + "Elija opción:";
 
@@ -174,15 +186,18 @@ public class Menu {
 
                 switch (opcion) {
                     case 1:
-
-                        banco.listarUsuarios();
-                        JOptionPane.showMessageDialog(null, "El listado se ha generado en la CONSOLA de salida.");
+                        String listado = banco.listarUsuarios(); 
+                        JOptionPane.showMessageDialog(null, listado, "Listado de Usuarios", JOptionPane.INFORMATION_MESSAGE);
                         break;
                     case 2:
-                        banco.ordenarUsuariosPorNumero();
-                        JOptionPane.showMessageDialog(null, "Usuarios ordenados correctamente.");
+                        banco.ordenarUsuariosPorNumeroBurbujeo(); 
+                        JOptionPane.showMessageDialog(null, "Usuarios ordenados correctamente por Burbujeo.");
                         break;
                     case 3:
+                        banco.ordenarUsuariosPorNumeroSeleccion();
+                        JOptionPane.showMessageDialog(null, "Usuarios ordenados correctamente por Selección.");
+                        break;
+                    case 4:
                         String montoStr = JOptionPane.showInputDialog("Monto a cargar:");
                         if (montoStr != null) {
                             double monto = Double.parseDouble(montoStr);
@@ -190,7 +205,12 @@ public class Menu {
                             JOptionPane.showMessageDialog(null, "Carga exitosa.");
                         }
                         break;
+                    case 5:
+                        double efectivo = cajero.getEfectivoDisponible();
+                        JOptionPane.showMessageDialog(null, "Efectivo disponible en el cajero: $" + efectivo);
+                        break;
                     case 0:
+                        JOptionPane.showMessageDialog(null, "Saliendo del menú de administrador...");
                         break;
                     default:
                         JOptionPane.showMessageDialog(null, "Opción inválida.");

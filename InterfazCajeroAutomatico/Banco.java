@@ -30,7 +30,7 @@ public class Banco {
         return null;
     }
 
-    public void ordenarUsuariosPorNumero() {
+    public void ordenarUsuariosPorNumeroBurbujeo() {
         for (int i = 0; i < cantUsuarios - 1; i++) {
             for (int j = 0; j < cantUsuarios - i - 1; j++) {
 
@@ -42,7 +42,20 @@ public class Banco {
                 }
             }
         }
-        System.out.println("Usuarios ordenados por número de cuenta (ID).");
+    }
+    
+    public void ordenarUsuariosPorNumeroSeleccion() {
+        for (int i = 0; i < cantUsuarios - 1; i++) {
+            int indiceMinimo = i;
+            for (int j = i + 1; j < cantUsuarios; j++) {
+                if (usuarios[j].getNroUsuario().compareTo(usuarios[indiceMinimo].getNroUsuario()) < 0) {
+                    indiceMinimo = j;
+                }
+            }
+            Usuario temp = usuarios[indiceMinimo];
+            usuarios[indiceMinimo] = usuarios[i];
+            usuarios[i] = temp;
+        }
     }
 
     public Usuario buscarUsuarioBinaria(String nroCuenta) {
@@ -64,16 +77,21 @@ public class Banco {
         return null;
     }
 
-    public void listarUsuarios() {
+    public String listarUsuarios() {
         if (cantUsuarios == 0) {
-            System.out.println("No hay usuarios en el banco.");
-            return;
+            return "No hay usuarios en el banco.";
         }
+        StringBuilder sb = new StringBuilder("--- Listado de Usuarios ---\n");
         for (int i = 0; i < cantUsuarios; i++) {
-            System.out.println(usuarios[i].toString());
+            sb.append(usuarios[i].toString()).append("\n");
         }
+        return sb.toString();
     }
 
+    public int getCantUsuarios() {
+        return cantUsuarios;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -86,15 +104,6 @@ public class Banco {
         return usuarios;
     }
 
-    public void setUsuarios(Usuario[] usuarios) {
-        this.usuarios = usuarios;
-    }
-
-    public int getCantUsuarios() {
-        return cantUsuarios;
-    }
-
-    public void setCantUsuarios(int cantUsuarios) {
-        this.cantUsuarios = cantUsuarios;
+    public void setUsuarios(Usuario... usuarios) {
     }
 }
