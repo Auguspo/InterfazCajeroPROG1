@@ -24,29 +24,29 @@ public class Usuario extends Persona {
     }
 
     public void agregarCuenta(Cuenta c) {
-        if (cantCuentas < cuentas.length) {
-            cuentas[cantCuentas] = c;
-            cantCuentas++;
+        if (this.cantCuentas < this.cuentas.length) {
+            this.cuentas[this.cantCuentas] = c;
+            this.cantCuentas++;
         } else {
             System.out.println("Error: No se pueden agregar más cuentas a este usuario.");
         }
     }
 
     public Cuenta getCuenta(String numero) {
-        for (int i = 0; i < cantCuentas; i++) {
-            if (cuentas[i].getNumero().equals(numero)) {
-                return cuentas[i];
+        for (int i = 0; i < this.cantCuentas; i++) {
+            if (this.cuentas[i].getNumero().equals(numero)) {
+                return this.cuentas[i];
             }
         }
         return null;
     }
 
     public Cuenta[] getCuentas() {
-        return cuentas;
+        return this.cuentas;
     }
 
     public int getCantCuentas() {
-        return cantCuentas;
+        return this.cantCuentas;
     }
 
     public void cambiarPin(int nuevoPin) {
@@ -54,7 +54,7 @@ public class Usuario extends Persona {
     }
 
     public String getEstado() {
-        return estado;
+        return this.estado;
     }
 
     public void setEstado(String estado) {
@@ -62,15 +62,15 @@ public class Usuario extends Persona {
     }
 
     public boolean esAdmin() {
-        return admin;
+        return this.admin;
     }
 
     public String getNroUsuario() {
-        return nroCuenta;
+        return this.nroCuenta;
     }
 
     public String getNroCuenta() {
-        return nroCuenta;
+        return this.nroCuenta;
     }
 
     public void setNroCuenta(String nroCuenta) {
@@ -78,7 +78,7 @@ public class Usuario extends Persona {
     }
 
     public int getPin() {
-        return pin;
+        return this.pin;
     }
 
     public void setPin(int pin) {
@@ -86,7 +86,7 @@ public class Usuario extends Persona {
     }
 
     public boolean isAdmin() {
-        return admin;
+        return this.admin;
     }
 
     public void setAdmin(boolean admin) {
@@ -95,6 +95,6 @@ public class Usuario extends Persona {
 
     @Override
     public String toString() {
-        return super.toString() + " - UserID: " + nroCuenta + " [" + estado + "]";
+        return super.toString() + " - UserID: " + this.nroCuenta + " [" + this.estado + "]";
     }
 }

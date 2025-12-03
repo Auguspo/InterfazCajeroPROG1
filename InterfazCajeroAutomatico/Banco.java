@@ -13,61 +13,60 @@ public class Banco {
     }
 
     public void agregarUsuario(Usuario u) {
-        if (cantUsuarios < usuarios.length) {
-            usuarios[cantUsuarios] = u;
-            cantUsuarios++;
+        if (this.cantUsuarios < this.usuarios.length) {
+            this.usuarios[this.cantUsuarios] = u;
+            this.cantUsuarios++;
         } else {
             System.out.println("El banco está lleno, no se admiten más clientes.");
         }
     }
 
     public Usuario buscarUsuarioPorNro(String nroCuenta) {
-        for (int i = 0; i < cantUsuarios; i++) {
-            if (usuarios[i].getNroUsuario().equals(nroCuenta)) {
-                return usuarios[i];
+        for (int i = 0; i < this.cantUsuarios; i++) {
+            if (this.usuarios[i].getNroUsuario().equals(nroCuenta)) {
+                return this.usuarios[i];
             }
         }
         return null;
     }
 
     public void ordenarUsuariosPorNumeroBurbujeo() {
-        for (int i = 0; i < cantUsuarios - 1; i++) {
-            for (int j = 0; j < cantUsuarios - i - 1; j++) {
+        for (int i = 0; i < this.cantUsuarios - 1; i++) {
+            for (int j = 0; j < this.cantUsuarios - i - 1; j++) {
 
-                if (usuarios[j].getNroUsuario().compareTo(usuarios[j + 1].getNroUsuario()) > 0) {
+                if (this.usuarios[j].getNroUsuario().compareTo(this.usuarios[j + 1].getNroUsuario()) > 0) {
 
-                    Usuario temp = usuarios[j];
-                    usuarios[j] = usuarios[j + 1];
-                    usuarios[j + 1] = temp;
+                    Usuario temp = this.usuarios[j];
+                    this.usuarios[j] = this.usuarios[j + 1];
+                    this.usuarios[j + 1] = temp;
                 }
             }
         }
     }
-    
+
     public void ordenarUsuariosPorNumeroSeleccion() {
-        for (int i = 0; i < cantUsuarios - 1; i++) {
+        for (int i = 0; i < this.cantUsuarios - 1; i++) {
             int indiceMinimo = i;
-            for (int j = i + 1; j < cantUsuarios; j++) {
-                if (usuarios[j].getNroUsuario().compareTo(usuarios[indiceMinimo].getNroUsuario()) < 0) {
+            for (int j = i + 1; j < this.cantUsuarios; j++) {
+                if (this.usuarios[j].getNroUsuario().compareTo(this.usuarios[indiceMinimo].getNroUsuario()) < 0) {
                     indiceMinimo = j;
                 }
             }
-            Usuario temp = usuarios[indiceMinimo];
-            usuarios[indiceMinimo] = usuarios[i];
-            usuarios[i] = temp;
+            Usuario temp = this.usuarios[indiceMinimo];
+            this.usuarios[indiceMinimo] = this.usuarios[i];
+            this.usuarios[i] = temp;
         }
     }
 
     public Usuario buscarUsuarioBinaria(String nroCuenta) {
         int inicio = 0;
-        int fin = cantUsuarios - 1;
+        int fin = this.cantUsuarios - 1;
 
         while (inicio <= fin) {
             int medio = (inicio + fin) / 2;
-            int comparacion = usuarios[medio].getNroUsuario().compareTo(nroCuenta);
-
+            int comparacion = this.usuarios[medio].getNroUsuario().compareTo(nroCuenta);
             if (comparacion == 0) {
-                return usuarios[medio];
+                return this.usuarios[medio];
             } else if (comparacion < 0) {
                 inicio = medio + 1;
             } else {
@@ -78,22 +77,22 @@ public class Banco {
     }
 
     public String listarUsuarios() {
-        if (cantUsuarios == 0) {
+        if (this.cantUsuarios == 0) {
             return "No hay usuarios en el banco.";
         }
         StringBuilder sb = new StringBuilder("--- Listado de Usuarios ---\n");
-        for (int i = 0; i < cantUsuarios; i++) {
-            sb.append(usuarios[i].toString()).append("\n");
+        for (int i = 0; i < this.cantUsuarios; i++) {
+            sb.append(this.usuarios[i].toString()).append("\n");
         }
         return sb.toString();
     }
 
     public int getCantUsuarios() {
-        return cantUsuarios;
+        return this.cantUsuarios;
     }
-    
+
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
 
     public void setNombre(String nombre) {
@@ -101,7 +100,7 @@ public class Banco {
     }
 
     public Usuario[] getUsuarios() {
-        return usuarios;
+        return this.usuarios;
     }
 
     public void setUsuarios(Usuario... usuarios) {

@@ -11,7 +11,7 @@ public class CajaAhorro extends Cuenta {
 
     @Override
     public boolean extraer(double monto) {
-        if (getSaldo() >= monto && monto <= limiteExtraccion) {
+        if (getSaldo() >= monto && monto <= this.limiteExtraccion) {
             setSaldo(getSaldo() - monto);
             return true;
         }
@@ -19,7 +19,7 @@ public class CajaAhorro extends Cuenta {
     }
 
     public double getLimiteExtraccion() {
-        return limiteExtraccion;
+        return this.limiteExtraccion;
     }
 
     public void setLimiteExtraccion(double limiteExtraccion) {

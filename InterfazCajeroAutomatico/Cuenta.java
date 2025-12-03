@@ -11,11 +11,11 @@ public class Cuenta {
     }
 
     public double getSaldo() {
-        return saldo;
+        return this.saldo;
     }
 
     public String getNumero() {
-        return numero;
+        return this.numero;
     }
 
     public void depositar(double monto) {
@@ -38,6 +38,6 @@ public class Cuenta {
 
     @Override
     public String toString() {
-        return "Cuenta Nro: " + numero + " | Saldo: $" + saldo;
+        return "Cuenta Nro: " + this.numero + " | Saldo: $" + this.saldo;
     }
 }

@@ -21,12 +21,12 @@ public class CajeroAutomatico {
     }
 
     public int extraer(Usuario u, Cuenta c, double monto) {
-        if (monto > efectivoDisponible) {
+        if (monto > this.efectivoDisponible) {
             return 1;
         }
 
         if (c.extraer(monto)) {
-            efectivoDisponible -= monto;
+            this.efectivoDisponible -= monto;
             return 0;
         } else {
             return 2;
@@ -35,6 +35,7 @@ public class CajeroAutomatico {
 
     public void depositar(Usuario u, Cuenta c, double monto) {
         c.depositar(monto);
+        this.efectivoDisponible += monto;
     }
 
     public double consultarSaldo(Cuenta c) {
@@ -46,7 +47,7 @@ public class CajeroAutomatico {
     }
 
     public Banco getBanco() {
-        return banco;
+        return this.banco;
     }
 
     public void setBanco(Banco banco) {
@@ -54,7 +55,7 @@ public class CajeroAutomatico {
     }
 
     public double getEfectivoDisponible() {
-        return efectivoDisponible;
+        return this.efectivoDisponible;
     }
 
     public void setEfectivoDisponible(double efectivoDisponible) {

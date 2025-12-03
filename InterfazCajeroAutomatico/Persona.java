@@ -14,7 +14,7 @@ public class Persona {
 
      
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
 
     public void setNombre(String nombre) {
@@ -22,7 +22,7 @@ public class Persona {
     }
 
     public String getApellido() {
-        return apellido;
+        return this.apellido;
     }
 
     public void setApellido(String apellido) {
@@ -30,7 +30,7 @@ public class Persona {
     }
 
     public String getDni() {
-        return dni;
+        return this.dni;
     }
 
     public void setDni(String dni) {
@@ -39,6 +39,6 @@ public class Persona {
 
     @Override
     public String toString() {
-        return nombre + " " + apellido + " (DNI: " + dni + ")";
+        return this.nombre + " " + this.apellido + " (DNI: " + this.dni + ")";
     }
 }

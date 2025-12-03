@@ -226,7 +226,7 @@ public class Menu {
     }
 
     public Banco getBanco() {
-        return banco;
+        return this.banco;
     }
 
     public void setBanco(Banco banco) {
@@ -234,7 +234,7 @@ public class Menu {
     }
 
     public CajeroAutomatico getCajero() {
-        return cajero;
+        return this.cajero;
     }
 
     public void setCajero(CajeroAutomatico cajero) {

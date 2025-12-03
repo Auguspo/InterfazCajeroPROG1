@@ -11,7 +11,7 @@ public class CuentaCorriente extends Cuenta {
 
     @Override
     public boolean extraer(double monto) {
-        if (monto <= (getSaldo() + descubiertoPermitido)) {
+        if (monto <= (getSaldo() + this.descubiertoPermitido)) {
             setSaldo(getSaldo() - monto);
             return true;
         }
@@ -19,7 +19,7 @@ public class CuentaCorriente extends Cuenta {
     }
 
     public double getDescubiertoPermitido() {
-        return descubiertoPermitido;
+        return this.descubiertoPermitido;
     }
 
     public void setDescubiertoPermitido(double descubiertoPermitido) {
@@ -28,6 +28,6 @@ public class CuentaCorriente extends Cuenta {
 
     @Override
     public String toString() {
-        return super.toString() + " (CC - Descubierto: " + descubiertoPermitido + ")";
+        return super.toString() + " (CC - Descubierto: " + this.descubiertoPermitido + ")";
     }
 }
