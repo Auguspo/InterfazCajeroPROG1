@@ -1,4 +1,4 @@
-
+package InterfazCajeroAutomatico;
 public class Persona {
 
     private String nombre;

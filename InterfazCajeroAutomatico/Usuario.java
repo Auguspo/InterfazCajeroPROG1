@@ -1,10 +1,12 @@
+package InterfazCajeroAutomatico;
+
 public class Usuario extends Persona {
-    private String nroCuenta; // Identificador del usuario/cliente
+    private String nroCuenta; 
     private int pin;
     private String estado;
     private boolean admin;
     private Cuenta[] cuentas;
-    private int cantCuentas; // Auxiliar para manejar el array
+    private int cantCuentas; 
 
     public Usuario(String nombre, String apellido, String dni, String nroCuenta, int pin, String estado, boolean admin) {
         super(nombre, apellido, dni);
@@ -12,7 +14,7 @@ public class Usuario extends Persona {
         this.pin = pin;
         this.estado = estado;
         this.admin = admin;
-        this.cuentas = new Cuenta[5]; // Capacidad fija de 5 cuentas por usuario
+        this.cuentas = new Cuenta[5]; 
         this.cantCuentas = 0;
     }
 
@@ -38,7 +40,6 @@ public class Usuario extends Persona {
         return null;
     }
 
-    // Método auxiliar para obtener todas las cuentas (útil para el menú)
     public Cuenta[] getCuentas() {
         return cuentas;
     }
@@ -55,7 +56,7 @@ public class Usuario extends Persona {
     public void setEstado(String estado) { this.estado = estado; }
 
     public boolean esAdmin() { return admin; }
-    public String getNroUsuario() { return nroCuenta; } // Getter para el nroCuenta (ID Usuario)
+    public String getNroUsuario() { return nroCuenta; } 
 
     @Override
     public String toString() {
