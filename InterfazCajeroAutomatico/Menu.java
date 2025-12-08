@@ -2,7 +2,6 @@ package InterfazCajeroAutomatico;
 
 import javax.swing.JOptionPane;
 
-
 public class Menu {
 
     private Banco banco;
@@ -14,7 +13,7 @@ public class Menu {
         cargarDatosPrueba();
     }
 
-    private void cargarDatosPrueba() {
+    private void cargarDatosPrueba() { // Crea y precarga usuarios y cuentas para inicializar el sistema.
         Usuario u1 = new Usuario("Juan", "Perez", "12345678", "user1", 1234, "Activo", false);
         u1.agregarCuenta(new CajaAhorro("CA-001", 5000, 2000));
         u1.agregarCuenta(new CuentaCorriente("CC-001", 1000, 5000));
@@ -29,13 +28,14 @@ public class Menu {
         banco.agregarUsuario(admin);
     }
 
-    public void iniciar() {
+    public void iniciar() { // Punto de entrada del flujo del programa (main loop del cajero).
         JOptionPane.showMessageDialog(null, "--- BIENVENIDO AL CAJERO AUTOMATICO ---");
 
         while (true) {
             try {
 
                 String user = JOptionPane.showInputDialog(null, "Ingrese Usuario (o escriba 'salir' o Cancelar para cerrar):");
+                // Solicita el ID de usuario a través de una ventana de diálogo.
 
                 if (user == null || user.equalsIgnoreCase("salir")) {
                     break;
@@ -66,9 +66,9 @@ public class Menu {
         }
     }
 
-    private void menuUsuario(Usuario u) {
+    private void menuUsuario(Usuario u) { // Menú dedicado a clientes normales con opciones de transacción.
 
-        Cuenta[] cuentasDisponibles = new Cuenta[u.getCantCuentas()];
+        Cuenta[] cuentasDisponibles = new Cuenta[u.getCantCuentas()]; // Obtiene las cuentas del usuario y las prepara para la selección.
         for (int i = 0; i < u.getCantCuentas(); i++) {
             cuentasDisponibles[i] = u.getCuentas()[i];
         }
@@ -77,7 +77,7 @@ public class Menu {
 
         while (cambiarCuenta) {
 
-            Cuenta cuentaActual = (Cuenta) JOptionPane.showInputDialog(
+            Cuenta cuentaActual = (Cuenta) JOptionPane.showInputDialog( // Permite al usuario seleccionar una de sus cuentas (CajaAhorro o CuentaCorriente).
                     null,
                     "Seleccione la cuenta con la que desea operar:",
                     "Selección de Cuenta",
@@ -130,9 +130,9 @@ public class Menu {
                             if (extStr != null) {
                                 double ext = Double.parseDouble(extStr);
                                 
-                                int status = cajero.extraer(u, cuentaActual, ext);
+                                int status = cajero.extraer(u, cuentaActual, ext); // Llama a la lógica de extracción y recibe el código de estado (0, 1, 2).
 
-                                switch (status) {
+                                switch (status) { // Traduce el código de estado retornado por CajeroAutomatico a un mensaje de JOptionPane.
                                     case 0:
                                         JOptionPane.showMessageDialog(null, "Extracción exitosa. Retire su dinero.");
                                         break;
@@ -146,7 +146,7 @@ public class Menu {
                             }
                             break;
                         case 9:
-                            break;
+                            break; 
                         case 0:
                             JOptionPane.showMessageDialog(null, "Cerrando sesión...");
                             cambiarCuenta = false;
@@ -163,11 +163,11 @@ public class Menu {
         }
     }
 
-    private void menuAdmin(Usuario u) {
+    private void menuAdmin(Usuario u) { // Menú exclusivo con operaciones de mantenimiento y gestión.
         int opcion = -1;
         while (opcion != 0) {
             try {
-                String menu = "--- Menú Administrador ---\n"
+                String menu = "    MENÚ ADMINISTRADOR    \n" // Define las opciones de administración, incluyendo los dos algoritmos de ordenamiento.
                         + "1. Listar Usuarios\n"
                         + "2. Ordenar Usuarios (Burbujeo)\n"
                         + "3. Ordenar Usuarios (Selección)\n" 
@@ -186,15 +186,16 @@ public class Menu {
 
                 switch (opcion) {
                     case 1:
-                        String listado = banco.listarUsuarios(); 
+                        String listado = banco.listarUsuarios();  // Llama a la función de listado del banco que devuelve el resultado como String.
                         JOptionPane.showMessageDialog(null, listado, "Listado de Usuarios", JOptionPane.INFORMATION_MESSAGE);
+                        // Muestra el listado de usuarios en una ventana de diálogo, cumpliendo la consigna de no usar consola.
                         break;
                     case 2:
                         banco.ordenarUsuariosPorNumeroBurbujeo(); 
                         JOptionPane.showMessageDialog(null, "Usuarios ordenados correctamente por Burbujeo.");
                         break;
                     case 3:
-                        banco.ordenarUsuariosPorNumeroSeleccion();
+                        banco.ordenarUsuariosPorNumeroSeleccion(); // Ejecuta el Ordenamiento por Selección, afectando el orden interno del arreglo de usuarios.
                         JOptionPane.showMessageDialog(null, "Usuarios ordenados correctamente por Selección.");
                         break;
                     case 4:
@@ -206,7 +207,7 @@ public class Menu {
                         }
                         break;
                     case 5:
-                        double efectivo = cajero.getEfectivoDisponible();
+                        double efectivo = cajero.getEfectivoDisponible(); // Consulta el efectivo total en el cajero.
                         JOptionPane.showMessageDialog(null, "Efectivo disponible en el cajero: $" + efectivo);
                         break;
                     case 0:

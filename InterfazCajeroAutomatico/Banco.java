@@ -1,18 +1,18 @@
 package InterfazCajeroAutomatico;
 
-public class Banco {
+public class Banco { 
 
     private String nombre;
-    private Usuario[] usuarios;
+    private Usuario[] usuarios; // Arreglo para almacenar todos los usuarios/clientes del banco.
     private int cantUsuarios;
-
-    public Banco(String nombre, int capacidad) {
-        this.nombre = nombre;
-        this.usuarios = new Usuario[capacidad];
+    
+    public Banco(String nombre, int capacidad) {  
+        this.nombre = nombre; 
+        this.usuarios = new Usuario[capacidad]; // Arreglo para almacenar usuarios
         this.cantUsuarios = 0;
     }
 
-    public void agregarUsuario(Usuario u) {
+    public void agregarUsuario(Usuario u) { // Añade un nuevo usuario si hay capacidad en el arreglo (validación de espacio).
         if (this.cantUsuarios < this.usuarios.length) {
             this.usuarios[this.cantUsuarios] = u;
             this.cantUsuarios++;
@@ -21,7 +21,7 @@ public class Banco {
         }
     }
 
-    public Usuario buscarUsuarioPorNro(String nroCuenta) {
+    public Usuario buscarUsuarioPorNro(String nroCuenta) { // Búsqueda lineal simple por el número de usuario/cuenta.
         for (int i = 0; i < this.cantUsuarios; i++) {
             if (this.usuarios[i].getNroUsuario().equals(nroCuenta)) {
                 return this.usuarios[i];
@@ -30,11 +30,11 @@ public class Banco {
         return null;
     }
 
-    public void ordenarUsuariosPorNumeroBurbujeo() {
+    public void ordenarUsuariosPorNumeroBurbujeo() { // Implementación del algoritmo de Ordenamiento de Burbuja (Bubble Sort).
         for (int i = 0; i < this.cantUsuarios - 1; i++) {
             for (int j = 0; j < this.cantUsuarios - i - 1; j++) {
 
-                if (this.usuarios[j].getNroUsuario().compareTo(this.usuarios[j + 1].getNroUsuario()) > 0) {
+                if (this.usuarios[j].getNroUsuario().compareTo(this.usuarios[j + 1].getNroUsuario()) > 0) { // Compara dos IDs consecutivos usando compareTo() (lógica de cadena).
 
                     Usuario temp = this.usuarios[j];
                     this.usuarios[j] = this.usuarios[j + 1];
@@ -44,9 +44,9 @@ public class Banco {
         }
     }
 
-    public void ordenarUsuariosPorNumeroSeleccion() {
+    public void ordenarUsuariosPorNumeroSeleccion() { // Implementación del algoritmo de Ordenamiento por Selección (Selection Sort).
         for (int i = 0; i < this.cantUsuarios - 1; i++) {
-            int indiceMinimo = i;
+            int indiceMinimo = i; // Asume el inicio de la sublista como el mínimo.
             for (int j = i + 1; j < this.cantUsuarios; j++) {
                 if (this.usuarios[j].getNroUsuario().compareTo(this.usuarios[indiceMinimo].getNroUsuario()) < 0) {
                     indiceMinimo = j;
@@ -58,12 +58,12 @@ public class Banco {
         }
     }
 
-    public Usuario buscarUsuarioBinaria(String nroCuenta) {
+    public Usuario buscarUsuarioBinaria(String nroCuenta) { // Implementación de la Búsqueda Binaria. Requiere que el arreglo esté ordenado.
         int inicio = 0;
         int fin = this.cantUsuarios - 1;
 
         while (inicio <= fin) {
-            int medio = (inicio + fin) / 2;
+            int medio = (inicio + fin) / 2; // Calcula el índice medio para dividir el espacio de búsqueda.
             int comparacion = this.usuarios[medio].getNroUsuario().compareTo(nroCuenta);
             if (comparacion == 0) {
                 return this.usuarios[medio];
@@ -76,11 +76,11 @@ public class Banco {
         return null;
     }
 
-    public String listarUsuarios() {
+    public String listarUsuarios() { // Genera un String con el listado completo para mostrar en JOptionPane.
         if (this.cantUsuarios == 0) {
             return "No hay usuarios en el banco.";
         }
-        StringBuilder sb = new StringBuilder("--- Listado de Usuarios ---\n");
+        StringBuilder sb = new StringBuilder("    LISTADO DE USUARIOS\n    "); // Usa StringBuilder para construir la cadena de salida eficientemente.
         for (int i = 0; i < this.cantUsuarios; i++) {
             sb.append(this.usuarios[i].toString()).append("\n");
         }
