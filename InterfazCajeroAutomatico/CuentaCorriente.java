@@ -1,18 +1,24 @@
 package InterfazCajeroAutomatico;
 
-public class CuentaCorriente extends Cuenta { // Clase derivada. Representa una Cuenta Corriente.
+// Clase derivada. Representa una Cuenta Corriente.
+public class CuentaCorriente extends Cuenta {
 
-    private double descubiertoPermitido; // Monto máximo que la cuenta puede quedar en negativo.
+    // Monto máximo que la cuenta puede quedar en negativo.
+    private double descubiertoPermitido;
 
-    public CuentaCorriente(String numero, double saldoInicial, double descubiertoPermitido) { // Constructor. Pasa datos a Cuenta y establece el descubierto.
+    // Constructor. Pasa datos a Cuenta y establece el descubierto.
+    public CuentaCorriente(String numero, double saldoInicial, double descubiertoPermitido) {
         super(numero, saldoInicial);
         this.descubiertoPermitido = descubiertoPermitido;
     }
 
-    @Override // Sobrescribe el método de extracción para incluir la lógica del descubierto.
+    // Sobrescribe el método de extracción para incluir la lógica del descubierto.
+    @Override
     public boolean extraer(double monto) {
-        if (monto <= (getSaldo() + this.descubiertoPermitido)) { // Lógica: el monto extraído no puede superar la suma del saldo y el descubierto.
-            setSaldo(getSaldo() - monto); // Realiza la extracción, pudiendo generar un saldo negativo.
+        // Lógica: el monto extraído no puede superar la suma del saldo y el descubierto.
+        if (monto <= (getSaldo() + this.descubiertoPermitido)) {
+            setSaldo(getSaldo() - monto);
+            // Realiza la extracción, pudiendo generar un saldo negativo.
             return true;
         }
         return false;
@@ -26,7 +32,8 @@ public class CuentaCorriente extends Cuenta { // Clase derivada. Representa una 
         this.descubiertoPermitido = descubiertoPermitido;
     }
 
-    @Override // Extiende la representación de la cuenta base para mostrar el descubierto.
+    // Extiende la representación de la cuenta base para mostrar el descubierto.
+    @Override 
     public String toString() {
         return super.toString() + " (CC - Descubierto: " + this.descubiertoPermitido + ")";
     }

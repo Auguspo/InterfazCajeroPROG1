@@ -1,6 +1,7 @@
 package InterfazCajeroAutomatico;
 
-public class Cuenta { // Clase base para todas las cuentas (Caja de Ahorro, Cuenta Corriente, etc.).
+// Clase base para todas las cuentas (Caja de Ahorro, Cuenta Corriente, etc.).
+public class Cuenta { 
 
     private String numero;
     private double saldo; // Atributo principal: el saldo actual de la cuenta.
@@ -18,13 +19,15 @@ public class Cuenta { // Clase base para todas las cuentas (Caja de Ahorro, Cuen
         return this.numero;
     }
 
-    public void depositar(double monto) { // Lógica para incrementar el saldo (siempre que el monto sea positivo).
+    // Lógica para incrementar el saldo (siempre que el monto sea positivo).
+    public void depositar(double monto) { 
         if (monto > 0) {
             this.saldo += monto;
         }
     }
 
-    public boolean extraer(double monto) { // Método fundamental, será sobrescrito por las clases derivadas (Polimorfismo).
+    // Método fundamental, será sobrescrito por las clases derivadas (Polimorfismo).
+    public boolean extraer(double monto) { 
         return false;
     }
 
@@ -32,11 +35,13 @@ public class Cuenta { // Clase base para todas las cuentas (Caja de Ahorro, Cuen
         this.numero = numero;
     }
 
-    public void setSaldo(double saldo) { // Setter para modificar directamente el saldo (uso interno y por herederos).
+    // Setter para modificar directamente el saldo (uso interno y por herederos).
+    public void setSaldo(double saldo) { 
         this.saldo = saldo;
     }
 
-    @Override // Formato de salida de la cuenta base.
+    // Formato de salida de la cuenta base.
+    @Override 
     public String toString() {
         return "Cuenta Nro: " + this.numero + " | Saldo: $" + this.saldo;
     }

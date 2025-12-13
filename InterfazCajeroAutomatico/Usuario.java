@@ -1,39 +1,49 @@
 package InterfazCajeroAutomatico;
 
-public class Usuario extends Persona { // Clase Usuario, hereda atributos y métodos de Persona (Herencia).
+import javax.swing.JOptionPane;
+
+public class Usuario extends Persona {
+    // Clase Usuario, hereda atributos y métodos de Persona (Herencia).
 
     private String nroCuenta;
-    private int pin; // PIN secreto para validar el acceso al cajero.
+    private int pin;
     private String estado;
-    private boolean admin; // Flag booleano para identificar si el usuario tiene privilegios de administrador.
-    private Cuenta[] cuentas; 
+    private boolean admin; // Admin Y/N 
+    private Cuenta[] cuentas;
     private int cantCuentas;
 
     // Constructor. Llama al constructor de la clase padre (super).
     public Usuario(String nombre, String apellido, String dni, String nroCuenta, int pin, String estado, boolean admin) {
-        super(nombre, apellido, dni); // Llamada al constructor de Persona para inicializar sus atributos.
+        // Llamada al constructor de Persona para inicializar sus atributos.
+        super(nombre, apellido, dni);
         this.nroCuenta = nroCuenta;
         this.pin = pin;
         this.estado = estado;
         this.admin = admin;
         this.cuentas = new Cuenta[5];
-        this.cantCuentas = 0; // Método clave para la seguridad: verifica si el PIN ingresado es correcto.
+        this.cantCuentas = 0;
     }
 
+    // Método clave para la seguridad: verifica si el PIN ingresado es correcto.
     public boolean validarPin(int pinIngresado) {
         return this.pin == pinIngresado;
     }
 
-    public void agregarCuenta(Cuenta c) { // Añade una instancia de Cuenta (CajaAhorro o CuentaCorriente) al arreglo del usuario.
+    public void agregarCuenta(Cuenta c) {
+        // Añade una instancia de Cuenta (CajaAhorro o CuentaCorriente) al arreglo del usuario.
         if (this.cantCuentas < this.cuentas.length) {
             this.cuentas[this.cantCuentas] = c;
             this.cantCuentas++;
         } else {
-            System.out.println("Error: No se pueden agregar más cuentas a este usuario.");
+            JOptionPane.showMessageDialog(null,
+                    "Error: No se pueden agregar más cuentas a este usuario.",
+                    "Límite de Cuentas Alcanzado",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public Cuenta getCuenta(String numero) { // Busca una cuenta específica por su número dentro del arreglo del usuario (Búsqueda Lineal).
+    // Busca una cuenta específica por su número dentro del arreglo del usuario (Búsqueda Lineal).
+    public Cuenta getCuenta(String numero) {
         for (int i = 0; i < this.cantCuentas; i++) {
             if (this.cuentas[i].getNumero().equals(numero)) {
                 return this.cuentas[i];
@@ -66,10 +76,6 @@ public class Usuario extends Persona { // Clase Usuario, hereda atributos y mét
         return this.admin;
     }
 
-    public String getNroUsuario() { // Alias para obtener el nroCuenta, que actúa como ID de usuario en el sistema de login.
-        return this.nroCuenta;
-    }
-
     public String getNroCuenta() {
         return this.nroCuenta;
     }
@@ -94,7 +100,8 @@ public class Usuario extends Persona { // Clase Usuario, hereda atributos y mét
         this.admin = admin;
     }
 
-    @Override // Representación completa del usuario, incluyendo su estado y si es administrador.
+    @Override
+    // Representación completa del usuario, incluyendo su estado y si es administrador.
     public String toString() {
         return super.toString() + " - UserID: " + this.nroCuenta + " [" + this.estado + "]";
     }

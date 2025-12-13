@@ -10,7 +10,8 @@ public class CajeroAutomatico {
         this.efectivoDisponible = efectivoInicial;
     }
 
-    public Usuario iniciarSesion(String nroUsuario, int pin) { // Lógica de autenticación: busca usuario y valida el PIN.
+    // Lógica de autenticación: busca usuario y valida el PIN.
+    public Usuario iniciarSesion(String nroUsuario, int pin) {
         Usuario u = banco.buscarUsuarioPorNro(nroUsuario);
         if (u != null) {
             if (u.validarPin(pin)) {
@@ -20,30 +21,46 @@ public class CajeroAutomatico {
         return null;
     }
 
-    public int extraer(Usuario u, Cuenta c, double monto) { // Ejecuta la extracción, devolviendo un código de estado (Polimorfismo en c.extraer).
-        if (monto > this.efectivoDisponible) { // Validación 1: ¿Hay suficiente efectivo en el cajero?
+    // Ejecuta la extracción, devolviendo un código de estado (Polimorfismo en c.extraer).
+    public int extraer(Usuario u, Cuenta c, double monto) {
+        // ValidaciófFn 1: ¿Hay suficiente efectivo en el cajero?
+        if (monto > this.efectivoDisponible) {
             return 1; // Código 1: Cajero sin suficiente efectivo.
         }
 
-        if (c.extraer(monto)) { // Llama al método polimórfico (depende si es CajaAhorro o CuentaCorriente).
+        // Llama al método polimórfico (depende si es CajaAhorro o CuentaCorriente).
+        if (c.extraer(monto)) {
             this.efectivoDisponible -= monto;
-            return 0; // Código 0: Éxito. El saldo se reduce y el efectivo del cajero también.
+            // Código 0: Éxito. El saldo se reduce y el efectivo del cajero también.
+            return 0;
         } else {
-            return 2; // Código 2: Fallo de la cuenta (saldo o límite insuficiente).
+            // Código 2: Fallo de la cuenta (saldo o límite insuficiente).
+            return 2;
         }
     }
 
-    public void depositar(Usuario u, Cuenta c, double monto) { // Simula un depósito, incrementando el saldo de la cuenta.
-        c.depositar(monto);
-        this.efectivoDisponible += monto;
+    public boolean depositar(Usuario u, Cuenta c, double monto) {
+        if (monto > 0) {
+            c.depositar(monto);
+            this.efectivoDisponible += monto;
+            return true;
+        } else {
+            // Falló, el monto no es válido
+            return false;
+        }
     }
 
     public double consultarSaldo(Cuenta c) {
         return c.getSaldo();
     }
 
-    public void cargarEfectivo(double monto) { // Función de mantenimiento: inyecta más dinero al cajero.
-        this.efectivoDisponible += monto;
+    // Función de mantenimiento: carga más dinero al cajero.
+    public boolean cargarEfectivo(double monto) {
+        if (monto > 0) {
+            this.efectivoDisponible += monto;
+            return true;
+        }
+        return false;
     }
 
     public Banco getBanco() {
@@ -54,7 +71,8 @@ public class CajeroAutomatico {
         this.banco = banco;
     }
 
-    public double getEfectivoDisponible() { // Devuelve el estado actual del efectivo (usado por el menú de admin).
+    // Devuelve el estado actual del efectivo (usado por el menú de admin).
+    public double getEfectivoDisponible() {
         return this.efectivoDisponible;
     }
 
