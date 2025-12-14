@@ -65,7 +65,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
     }
     
     // Nuevo método para solicitar texto no vacío
-    private String solicitarStringNoVacio(String mensaje, String titulo) {
+    private String solicitarString(String mensaje, String titulo) {
         String input;
         do {
             input = JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.QUESTION_MESSAGE);
@@ -82,27 +82,39 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
     
     // Lógica para añadir un nuevo usuario.
     private void añadirUsuarioCliente() {
-        String nombre = solicitarStringNoVacio("Ingrese Nombre:", "Nuevo Usuario");
+        boolean IBool = false;
+
+        String nombre = solicitarString("Ingrese Nombre:", "Nuevo Usuario");
         if (nombre == null) return;
         
-        String apellido = solicitarStringNoVacio("Ingrese Apellido:", "Nuevo Usuario");
+        String apellido = solicitarString("Ingrese Apellido:", "Nuevo Usuario");
         if (apellido == null) return;
         
-        String dni = solicitarStringNoVacio("Ingrese DNI:", "Nuevo Usuario");
-        if (dni == null) return;
+        String dni;
+
+        do {
+            IBool = false;
+            dni = solicitarString("Ingrese DNI:", "Nuevo Usuario");
+            
+            if (dni == null) return;
+
+            if (banco.buscarUsuario(dni, "dni") != null) {
+                JOptionPane.showMessageDialog(null, "Error: El DNI ya existe.", "DNI Duplicado", JOptionPane.ERROR_MESSAGE);
+                IBool = true;
+            }
+        } while (IBool);
         
         String nroCuenta;
-        boolean idDuplicado;
         do {
-            idDuplicado = false;
-            nroCuenta = solicitarStringNoVacio("Ingrese UserID (Nro. Cuenta):", "Nuevo Usuario");
+            IBool = false;
+            nroCuenta = solicitarString("Ingrese UserID (Nro. Cuenta):", "Nuevo Usuario");
             if (nroCuenta == null) return;
 
             if (banco.buscarUsuario(nroCuenta, "nroCuenta") != null) {
                 JOptionPane.showMessageDialog(null, "Error: El UserID ya existe. Intente con otro.", "ID Duplicado", JOptionPane.ERROR_MESSAGE);
-                idDuplicado = true;
+                IBool = true;
             }
-        } while (idDuplicado);
+        } while (IBool);
         
         Integer pin = solicitarEntero("Ingrese PIN (4 dígitos numéricos):");
         if (pin == null) return;
