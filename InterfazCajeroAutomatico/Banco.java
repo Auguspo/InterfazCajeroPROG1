@@ -20,11 +20,6 @@ public class Banco { // Clase que representa un banco con múltiples usuarios.
             return false; // Banco lleno
         }
 
-        // Usa el método de búsqueda para chequear duplicados por nroCuenta (UserID).
-        if (buscarUsuario(u.getNroCuenta(), "nroCuenta") != null) { 
-            return false; // El usuario ya existe
-        }
-
         this.usuarios[this.cantUsuarios] = u;
         this.cantUsuarios++;
         return true; // Agregado con éxito

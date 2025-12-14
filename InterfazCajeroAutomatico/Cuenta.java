@@ -26,7 +26,7 @@ public class Cuenta {
         }
     }
 
-    public boolean extraer(double monto) { // Lógica base: solo permite extracción si hay saldo suficiente.
+    public boolean extraer(double monto) { // solo permite extracción si hay saldo suficiente.
         return false;
     }
 

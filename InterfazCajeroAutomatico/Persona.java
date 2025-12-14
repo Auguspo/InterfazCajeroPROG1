@@ -1,6 +1,7 @@
 package InterfazCajeroAutomatico;
 
-public class Persona { // Clase base que representa a una persona en el sistema.
+// Clase base que representa a una persona en el sistema.
+public class Persona { 
 
     // Atributos privados que definen el estado de la persona (Encapsulamiento).
     private String nombre;

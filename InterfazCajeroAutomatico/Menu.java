@@ -2,13 +2,14 @@ package InterfazCajeroAutomatico;
 
 import javax.swing.JOptionPane;
 
-public class Menu { // Clase principal que maneja la interfaz del cajero automático
+// Clase principal que maneja la interfaz del cajero automático
+public class Menu {
 
     private Banco banco; // Instancia del banco que contiene usuarios y cuentas
     private CajeroAutomatico cajero; // Instancia del cajero automático
 
     public Menu() { // Inicializa el banco y el cajero
-        banco = new Banco("Banco Nación", 100);
+        banco = new Banco("Banco Nación", 4);
         cajero = new CajeroAutomatico(banco, 50000);
         cargarDatosPrueba();
     }
@@ -64,7 +65,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
         return valor;
     }
 
-    // Nuevo método para solicitar texto no vacío
+    // Método auxiliar para solicitar texto no vacío
     private String solicitarString(String mensaje, String titulo) {
         String input;
         do {
@@ -115,12 +116,6 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
 
         // 2. Generación automática de UserID
         String nroCuenta = "user" + (banco.getCantUsuarios() + 1);
-        int intentos = 0;
-        // Asegurar que el ID no exista (aunque con +1 no debería si la numeración es secuencial)
-        while (banco.buscarUsuario(nroCuenta, "nroCuenta") != null && intentos < 100) {
-            nroCuenta = "user" + (banco.getCantUsuarios() + 1 + intentos);
-            intentos++;
-        }
 
         // 3. Solicitud de PIN
         Integer pin;
@@ -203,7 +198,8 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
         banco.agregarUsuario(admin);
     }
 
-    public void iniciar() { // Método principal para iniciar la interfaz
+    // Método principal para iniciar la interfaz
+    public void iniciar() { 
         JOptionPane.showMessageDialog(null, "BIENVENIDO AL CAJERO AUTOMÁTICO");
 
         while (true) { // Bucle principal de inicio de sesión
@@ -244,7 +240,8 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
         }
     }
 
-    private void menuUsuario(Usuario u) { // Menú para usuarios normales
+    // Menú para usuarios normales
+    private void menuUsuario(Usuario u) {
 
         if (u.getCantCuentas() == 0) {
             JOptionPane.showMessageDialog(null,
@@ -342,7 +339,8 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
         }
     }
 
-    private void menuAdmin(Usuario u) { // Menú para administradores
+    // Menú para administradores
+    private void menuAdmin(Usuario u) { 
         int opcion = -1;
         while (opcion != 0) {
             String menuText = "MENÚ ADMINISTRADOR\n"
