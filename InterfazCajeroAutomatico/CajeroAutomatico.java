@@ -12,18 +12,22 @@ public class CajeroAutomatico {
 
     // Lógica de autenticación: busca usuario y valida el PIN.
     public Usuario iniciarSesion(String nroUsuario, int pin) {
-        Usuario u = banco.buscarUsuarioPorNro(nroUsuario);
+        // Usa el método de búsqueda genérico por UserID ("nroCuenta").
+        Usuario u = banco.buscarUsuario(nroUsuario, "nroCuenta"); 
+        
         if (u != null) {
+            // Usuario encontrado, ahora se valida el PIN.
             if (u.validarPin(pin)) {
-                return u;
+                return u; // Autenticación exitosa
             }
         }
-        return null;
+        // Si no se encuentra el usuario O el PIN es incorrecto, retorna null.
+        return null; 
     }
 
     // Ejecuta la extracción, devolviendo un código de estado (Polimorfismo en c.extraer).
     public int extraer(Usuario u, Cuenta c, double monto) {
-        // ValidaciófFn 1: ¿Hay suficiente efectivo en el cajero?
+        // Validación 1: ¿Hay suficiente efectivo en el cajero?
         if (monto > this.efectivoDisponible) {
             return 1; // Código 1: Cajero sin suficiente efectivo.
         }
