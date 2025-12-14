@@ -51,7 +51,7 @@ public class Banco { // Clase que representa un banco con multiples usuarios.
         return null;
     }
 
-    // Implementacin del algoritmo de Ordenamiento de Burbuja (Bubble Sort)con mensajes de estado.
+    // Implementacin del algoritmo de Ordenamiento de Burbuja
     public void ordenarUsuariosPorNumeroBurbujeo() {
         String listaAntes = listarUsuarios();
 
@@ -123,7 +123,7 @@ public class Banco { // Clase que representa un banco con multiples usuarios.
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // Implementacion de la BBusqueda Binaria (Requiere arreglo ordenado).
+    // Implementacion de la Busqueda Binaria (Requiere arreglo ordenado).
     public Usuario buscarUsuarioBinaria(String nroCuenta) {
         int inicio = 0;
         int fin = this.cantUsuarios - 1;

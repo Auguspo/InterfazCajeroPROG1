@@ -159,7 +159,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                         + "0. Cerrar Sesión\n\n"
                         + "Elija opción:";
 
-                Integer inputOpcion = solicitarEntero(menuText); // Solicita opción al usuario
+                Integer inputOpcion = solicitarEntero(menuText); // Solicita opción al usuario 
 
                 if (inputOpcion == null) {
                     opcion = 0;
@@ -171,14 +171,14 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                 switch (opcion) { // Manejo de opciones
                     case 1: // Consultar saldo
                         double saldo = cajero.consultarSaldo(cuentaActual);
-                        JOptionPane.showMessageDialog(null, "Saldo actual: $" + saldo);
+                        JOptionPane.showMessageDialog(null, "Saldo actual: $" + saldo, "Saldo de Cuenta", JOptionPane.INFORMATION_MESSAGE);
                         break;
                     case 2: // Depositar
                         Double dep = solicitarMonto("Monto a depositar:");
                         if (dep != null) {
                             // Como solicitarMonto ya valida > 0, aquí solo ejecutamos
                             if (cajero.depositar(u, cuentaActual, dep)) {
-                                JOptionPane.showMessageDialog(null, "Depósito realizado. Nuevo saldo: $" + cuentaActual.getSaldo());
+                                JOptionPane.showMessageDialog(null, "Depósito realizado. Nuevo saldo: $" + cuentaActual.getSaldo(), "Deposito Exitoso", JOptionPane.INFORMATION_MESSAGE);
                             } else {
                                 JOptionPane.showMessageDialog(null, "Error desconocido al depositar.");
                             }
@@ -190,7 +190,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                             int status = cajero.extraer(u, cuentaActual, ext);
                             switch (status) {
                                 case 0:
-                                    JOptionPane.showMessageDialog(null, "Extracción exitosa. Retire su dinero.");
+                                    JOptionPane.showMessageDialog(null, "Extracción exitosa. Retire su dinero.", "Extracción Exitosa", JOptionPane.INFORMATION_MESSAGE);
                                     break;
                                 case 1:
                                     JOptionPane.showMessageDialog(null, "El cajero no tiene suficiente efectivo.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -204,7 +204,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                     case 9: // Cambiar de cuenta
                         break;
                     case 0: // Cerrar sesión
-                        JOptionPane.showMessageDialog(null, "Cerrando sesión...");
+                        JOptionPane.showMessageDialog(null, "Cerrando sesión, retire la tarjeta", "Salir", JOptionPane.INFORMATION_MESSAGE);
                         cambiarCuenta = false;
                         break;
                     default: // Opción inválida
@@ -225,6 +225,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                     + "5. Consultar Efectivo Cajero\n"
                     + "6. Activar/Bloquear Usuario\n"
                     + "7. Cambiar PIN de Usuario\n"
+                    + "8. Buscar Usuario\n"
                     + "0. Salir\n\n"
                     + "Elija opción:";
 
@@ -258,7 +259,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                     break;
                 case 5: // Consultar efectivo del cajero
                     double efectivo = cajero.getEfectivoDisponible();
-                    JOptionPane.showMessageDialog(null, "Efectivo disponible en el cajero: $" + efectivo);
+                    JOptionPane.showMessageDialog(null, "Efectivo disponible en el cajero: $" + efectivo, "Efectivo Cajero", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 6: // Activar/Bloquear usuario
                     String busquedaBloqueo = JOptionPane.showInputDialog(null, banco.listarUsuarios() + "\n\nIngrese el **UserID** o **DNI** del Usuario a modificar:");
@@ -281,7 +282,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                                 }
                             }
                         } else {
-                            JOptionPane.showMessageDialog(null, "Usuario no encontrado por UserID ni DNI.", "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Usuario no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                     break;
@@ -292,10 +293,10 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                         if (uTemp == null) {
                             uTemp = banco.buscarUsuario(busquedaPin, "dni");
                         }
-                                        
+
                         if (uTemp != null) {
 
-                            Integer nuevoPin = solicitarEntero("Ingrese el NUEVO PIN (Numérico) para " + uTemp.getApellido() + " " + uTemp.getNombre() + ":");
+                            Integer nuevoPin = solicitarEntero("Ingrese el NUEVO PIN (Numérico):");
 
                             if (nuevoPin != null) {
                                 uTemp.cambiarPin(nuevoPin);
@@ -303,6 +304,38 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                             }
                         } else {
                             JOptionPane.showMessageDialog(null, "Usuario no encontrado por UserID ni DNI.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    break;
+                case 8: 
+                    //  Busqueda de usuario
+                    String datoBusqueda = JOptionPane.showInputDialog("Ingrese UserID o DNI a buscar:");
+
+                    if (datoBusqueda != null && !datoBusqueda.trim().isEmpty()) {
+                        // 1. Buscamos por ID
+                        Usuario uEnc = banco.buscarUsuario(datoBusqueda, "nroCuenta");
+
+                        // 2. Si no está, buscamos por DNI
+                        if (uEnc == null) {
+                            uEnc = banco.buscarUsuario(datoBusqueda, "dni");
+                        }
+
+                        if (uEnc != null) {
+                            String info = "<html><pre>"
+                                    + "-----------------------------------\n"
+                                    + "       DETALLE DE USUARIO          \n"
+                                    + "-----------------------------------\n"
+                                    + "Nombre:    " + uEnc.getApellido() + ", " + uEnc.getNombre() + "\n"
+                                    + "DNI:       " + uEnc.getDni() + "\n"
+                                    + "Usuario:   " + uEnc.getNroCuenta() + "\n"
+                                    + "Estado:    " + uEnc.getEstado() + "\n"
+                                    + "Cuentas:   " + uEnc.getCantCuentas() + "\n"
+                                    + "Permisos:  " + (uEnc.esAdmin() ? "ADMINISTRADOR" : "CLIENTE") + "\n"
+                                    + "-----------------------------------</pre></html>";
+
+                            JOptionPane.showMessageDialog(null, info, "Usuario Encontrado", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se encontró ningún usuario con ese dato.", "Sin resultados", JOptionPane.WARNING_MESSAGE);
                         }
                     }
                     break;
