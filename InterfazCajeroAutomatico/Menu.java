@@ -67,7 +67,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
     // Nuevo método para solicitar texto no vacío
     private String solicitarString(String mensaje, String titulo) {
         String input;
-        do {
+        do { 
             input = JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.QUESTION_MESSAGE);
             if (input == null) { // Cancelación
                 return null;
@@ -82,48 +82,79 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
     
     // Lógica para añadir un nuevo usuario.
     private void añadirUsuarioCliente() {
-        boolean IBool = false;
-
-        String nombre = solicitarString("Ingrese Nombre:", "Nuevo Usuario");
+        // 1. Solicitud de datos básicos
+        String nombre = solicitarString("Ingrese Nombre:", "Nuevo Cliente");
         if (nombre == null) return;
         
-        String apellido = solicitarString("Ingrese Apellido:", "Nuevo Usuario");
+        String apellido = solicitarString("Ingrese Apellido:", "Nuevo Cliente");
         if (apellido == null) return;
         
         String dni;
+        boolean dniDuplicado;
 
         do {
-            IBool = false;
-            dni = solicitarString("Ingrese DNI:", "Nuevo Usuario");
+            dniDuplicado = false;
+            dni = solicitarString("Ingrese DNI:", "Nuevo Cliente");
             
             if (dni == null) return;
 
             if (banco.buscarUsuario(dni, "dni") != null) {
-                JOptionPane.showMessageDialog(null, "Error: El DNI ya existe.", "DNI Duplicado", JOptionPane.ERROR_MESSAGE);
-                IBool = true;
+                JOptionPane.showMessageDialog(null, "Error: El DNI ya existe en el sistema.", "DNI Duplicado", JOptionPane.ERROR_MESSAGE);
+                dniDuplicado = true;
             }
-        } while (IBool);
+        } while (dniDuplicado);
         
-        String nroCuenta;
-        do {
-            IBool = false;
-            nroCuenta = solicitarString("Ingrese UserID (Nro. Cuenta):", "Nuevo Usuario");
-            if (nroCuenta == null) return;
-
-            if (banco.buscarUsuario(nroCuenta, "nroCuenta") != null) {
-                JOptionPane.showMessageDialog(null, "Error: El UserID ya existe. Intente con otro.", "ID Duplicado", JOptionPane.ERROR_MESSAGE);
-                IBool = true;
-            }
-        } while (IBool);
+        // 2. Generación automática de UserID
+        String nroCuenta = "user" + (banco.getCantUsuarios() + 1);
+        int intentos = 0;
+        // Asegurar que el ID no exista (aunque con +1 no debería si la numeración es secuencial)
+        while (banco.buscarUsuario(nroCuenta, "nroCuenta") != null && intentos < 100) {
+            nroCuenta = "user" + (banco.getCantUsuarios() + 1 + intentos);
+            intentos++;
+        }
         
-        Integer pin = solicitarEntero("Ingrese PIN (4 dígitos numéricos):");
+        // 3. Solicitud de PIN
+        Integer pin = solicitarEntero("El UserID asignado es: " + nroCuenta + "\nIngrese PIN (4 dígitos numéricos):");
         if (pin == null) return;
 
-        // Crear el nuevo usuario (por defecto: Activo, no administrador)
+        // 4. Creación del usuario (por defecto: Activo, no administrador)
         Usuario nuevoUsuario = new Usuario(nombre, apellido, dni, nroCuenta, pin, "Activo", false);
         
+        // 5. Selección de cuentas a abrir
+        boolean cuentaCorrienteAbierta = false;
+        boolean cajaAhorroAbierta = false;
+        
+        // a) Cuenta Corriente
+        String abrirCC = solicitarString("¿Desea abrir una Cuenta Corriente (S/N)?", "Selección de Cuentas");
+        if (abrirCC != null && abrirCC.equalsIgnoreCase("S")) {
+            Double descubierto = solicitarMonto("Ingrese el Descubierto Permitido para Cuenta Corriente (Monto Positivo):");
+            if (descubierto != null) {
+                nuevoUsuario.agregarCuenta(new CuentaCorriente("CC-" + nroCuenta, 0.0, descubierto));
+                cuentaCorrienteAbierta = true;
+            }
+        }
+        
+        // b) Caja de Ahorro
+        String abrirCA = solicitarString("¿Desea abrir una Caja de Ahorro (S/N)?", "Selección de Cuentas");
+        if (abrirCA != null && abrirCA.equalsIgnoreCase("S")) {
+            Double limite = solicitarMonto("Ingrese el Límite de Extracción para Caja de Ahorro (Monto Positivo):");
+            if (limite != null) {
+                nuevoUsuario.agregarCuenta(new CajaAhorro("CA-" + nroCuenta, 0.0, limite));
+                cajaAhorroAbierta = true;
+            }
+        }
+
+        // 6. Finalización y validación de cuentas
         if (banco.agregarUsuario(nuevoUsuario)) {
-            JOptionPane.showMessageDialog(null, "Usuario/Cliente agregado con éxito. UserID: " + nroCuenta + "\nRecuerde asignarle al menos una cuenta.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            String mensajeExito = "Usuario/Cliente agregado con éxito. UserID: " + nroCuenta + "\n";
+            if (!cuentaCorrienteAbierta && !cajaAhorroAbierta) {
+                mensajeExito += "ADVERTENCIA: No se asignó ninguna cuenta al usuario.";
+            } else {
+                mensajeExito += "Cuentas abiertas: " 
+                              + (cuentaCorrienteAbierta ? "Cuenta Corriente | " : "") 
+                              + (cajaAhorroAbierta ? "Caja de Ahorro" : "");
+            }
+            JOptionPane.showMessageDialog(null, mensajeExito, "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "Error al agregar usuario (límite alcanzado o error interno).", "Error de Creación", JOptionPane.ERROR_MESSAGE);
         }
@@ -199,7 +230,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
 
         boolean cambiarCuenta = true; // Controla si el usuario quiere cambiar de cuenta
 
-        while (cambiarCuenta) { // Bucle para cambiar de cuenta
+        while (cambiarCuenta) { // Cambiar de cuenta
             Cuenta cuentaActual = (Cuenta) JOptionPane.showInputDialog(
                     null,
                     "Seleccione la cuenta con la que desea operar:",
@@ -221,7 +252,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                         + "1. Consultar Saldo\n"
                         + "2. Depositar\n"
                         + "3. Extraer\n"
-                        + "9. CAMBIAR DE CUENTA\n"
+                        + "9. Cambiar de cuenta\n"
                         + "0. Cerrar Sesión\n\n"
                         + "Elija opción:";
 
@@ -329,13 +360,13 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                     break;
                 case 6: // Activar/Bloquear usuario
                     String busquedaBloqueo = JOptionPane.showInputDialog(null, banco.listarUsuarios() + "\n\nIngrese el **UserID** o **DNI** del Usuario a modificar:");
-                    if (busquedaBloqueo != null) {
+                    if (busquedaBloqueo != null) { // Búsqueda
                         Usuario uTemp = banco.buscarUsuario(busquedaBloqueo, "nroCuenta");
-                        if (uTemp == null) {
+                        if (uTemp == null) { 
                             uTemp = banco.buscarUsuario(busquedaBloqueo, "dni");
                         }
 
-                        if (uTemp != null) {
+                        if (uTemp != null) { 
                             if (uTemp.esAdmin()) {
                                 JOptionPane.showMessageDialog(null, "Error: No se puede bloquear a un Administrador.", "Acción Denegada", JOptionPane.WARNING_MESSAGE);
                             } else {
@@ -354,7 +385,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                     break;
                 case 7: // Cambiar PIN de usuario
                     String busquedaPin = JOptionPane.showInputDialog(null, banco.listarUsuarios() + "\n\nIngrese el **UserID** o **DNI** del Usuario para cambio de PIN:");
-                    if (busquedaPin != null) {
+                    if (busquedaPin != null) { // Búsqueda
                         Usuario uTemp = banco.buscarUsuario(busquedaPin, "nroCuenta");
                         if (uTemp == null) {
                             uTemp = banco.buscarUsuario(busquedaPin, "dni");
@@ -373,7 +404,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                         }
                     }
                     break;
-                case 9: // AGREGAR NUEVO USUARIO/CLIENTE
+                case 9: // Agregar nuevo usuario/cliente
                     añadirUsuarioCliente();
                     break;
                 case 0: // Salir

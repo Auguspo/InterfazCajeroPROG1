@@ -52,7 +52,7 @@ public class Banco { // Clase que representa un banco con múltiples usuarios.
     }
 
     // Implementación del algoritmo de Ordenamiento de Burbuja (Bubble Sort).
-    public void ordenarUsuariosPorNumeroBurbujeo() {
+    public void ordenarUsuariosPorNumeroBurbujeo() { // Cambiado: Comparación por DNI
         String listaAntes = listarUsuarios();
         
         int resultado = JOptionPane.showConfirmDialog(null, 
@@ -60,13 +60,12 @@ public class Banco { // Clase que representa un banco con múltiples usuarios.
             "Confirmar Ordenamiento por Burbujeo (DNI)", 
             JOptionPane.YES_NO_OPTION);
 
-        if (resultado != JOptionPane.YES_OPTION) {
+        if (resultado != JOptionPane.YES_OPTION) { // Cancelar
             JOptionPane.showMessageDialog(null, "Ordenamiento cancelado.", "Cancelado", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        // Cambiado: Comparación por DNI
-        for (int i = 0; i < this.cantUsuarios - 1; i++) {
+        for (int i = 0; i < this.cantUsuarios - 1; i++) { // Recorre todo el arreglo
             for (int j = 0; j < this.cantUsuarios - i - 1; j++) {
                 if (this.usuarios[j].getDni().compareTo(this.usuarios[j + 1].getDni()) > 0) { // Compara dos DNI consecutivos.
                     // Intercambio
@@ -85,7 +84,7 @@ public class Banco { // Clase que representa un banco con múltiples usuarios.
     }
 
     // Implementación del algoritmo de Ordenamiento por Selección (Selection Sort).
-    public void ordenarUsuariosPorNumeroSeleccion() {
+    public void ordenarUsuariosPorNumeroSeleccion() { // Cambiado: Comparación por DNI
         String listaAntes = listarUsuarios();
         
         int resultado = JOptionPane.showConfirmDialog(null, 
@@ -98,7 +97,6 @@ public class Banco { // Clase que representa un banco con múltiples usuarios.
             return;
         }
 
-        // Cambiado: Comparación por DNI
         for (int i = 0; i < this.cantUsuarios - 1; i++) {
             int indiceMinimo = i; // Asume el inicio de la sublista como el mínimo.
             for (int j = i + 1; j < this.cantUsuarios; j++) {
@@ -119,8 +117,7 @@ public class Banco { // Clase que representa un banco con múltiples usuarios.
             JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // Implementación de la Búsqueda Binaria (Requiere arreglo ordenado).
-    public Usuario buscarUsuarioBinaria(String nroCuenta) {
+    public Usuario buscarUsuarioBinaria(String nroCuenta) { // Busca por UserID (requiere arreglo ordenado por UserID)
         // Mantenido para buscar por UserID (requiere que el arreglo esté ordenado por UserID)
         int inicio = 0;
         int fin = this.cantUsuarios - 1;
@@ -185,19 +182,19 @@ public class Banco { // Clase que representa un banco con múltiples usuarios.
         return sb.toString();
     }
 
-    public int getCantUsuarios() {
+    public int getCantUsuarios() { // Devuelve la cantidad actual de usuarios.
         return this.cantUsuarios;
     }
 
-    public String getNombre() {
+    public String getNombre() { // Devuelve el nombre del banco.
         return this.nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre) { // Permite cambiar el nombre del banco.
         this.nombre = nombre;
     }
 
-    public Usuario[] getUsuarios() {
+    public Usuario[] getUsuarios() { // Devuelve el arreglo completo de usuarios.
         return this.usuarios;
     }
 

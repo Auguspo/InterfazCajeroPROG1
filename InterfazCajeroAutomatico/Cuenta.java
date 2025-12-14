@@ -26,8 +26,7 @@ public class Cuenta {
         }
     }
 
-    // Método fundamental, será sobrescrito por las clases derivadas (Polimorfismo).
-    public boolean extraer(double monto) { 
+    public boolean extraer(double monto) { // Lógica base: solo permite extracción si hay saldo suficiente.
         return false;
     }
 
@@ -35,8 +34,7 @@ public class Cuenta {
         this.numero = numero;
     }
 
-    // Setter para modificar directamente el saldo (uso interno y por herederos).
-    public void setSaldo(double saldo) { 
+    public void setSaldo(double saldo) { // Setter para modificar el saldo.
         this.saldo = saldo;
     }
 
