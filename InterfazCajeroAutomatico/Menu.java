@@ -2,12 +2,12 @@ package InterfazCajeroAutomatico;
 
 import javax.swing.JOptionPane;
 
-public class Menu {
+public class Menu { // Clase principal que maneja la interfaz del cajero automático
 
-    private Banco banco;
-    private CajeroAutomatico cajero;
+    private Banco banco; // Instancia del banco que contiene usuarios y cuentas
+    private CajeroAutomatico cajero; // Instancia del cajero automático
 
-    public Menu() {
+    public Menu() { // Inicializa el banco y el cajero
         banco = new Banco("Banco Nación", 100);
         cajero = new CajeroAutomatico(banco, 50000);
         cargarDatosPrueba();
@@ -18,9 +18,9 @@ public class Menu {
         boolean IBool;
         Double valor = null;
 
-        do {
+        do { // Bucle hasta obtener un monto válido
             IBool = false;
-            try {
+            try { // Captura errores de formato
                 String input = JOptionPane.showInputDialog(null, mensaje);
 
                 if (input == null) {
@@ -28,25 +28,25 @@ public class Menu {
                 }
                 valor = Double.parseDouble(input);
 
-                if (valor > 0) {
+                if (valor > 0) { 
                     IBool = true;
-                } else {
+                } else { // Monto no positivo
                     JOptionPane.showMessageDialog(null, "El monto debe ser positivo.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e) { // Error de formato
                 JOptionPane.showMessageDialog(null, "Error: Ingrese un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
             }
-        } while (!IBool);
+        } while (!IBool); // Repite hasta obtener un monto válido
 
-        return valor;
+        return valor; 
     }
 
     // Método auxiliar para validar inputs de opciones enteras
     private Integer solicitarEntero(String mensaje) {
-        boolean IBool;
-        Integer valor = null;
+        boolean IBool; 
+        Integer valor = null; 
 
-        do {
+        do { // Bucle hasta obtener un entero válido
             IBool = false;
             try {
                 String input = JOptionPane.showInputDialog(null, mensaje);
@@ -64,38 +64,39 @@ public class Menu {
         return valor;
     }
 
-    private void cargarDatosPrueba() {
-        Usuario u1 = new Usuario("Juan", "Perez", "12345678", "user1", 1234, "Activo", false);
-        u1.agregarCuenta(new CajaAhorro("CA-001", 5000, 2000));
-        u1.agregarCuenta(new CuentaCorriente("CC-001", 1000, 5000));
+    private void cargarDatosPrueba() { // Carga de usuarios y cuentas de prueba
+        Usuario u1 = new Usuario("Juan", "Perez", "12345678", "user1", 1234, "Activo", false); 
+        u1.agregarCuenta(new CajaAhorro("CA-001", 5000, 2000)); 
+        u1.agregarCuenta(new CuentaCorriente("CC-001", 1000, 5000)); 
 
         Usuario u2 = new Usuario("Ana", "Gomez", "87654321", "user2", 4321, "Activo", false);
         u2.agregarCuenta(new CajaAhorro("CA-002", 7000, 3000));
 
-        Usuario admin = new Usuario("Admin", "Sist", "0000", "admin", 9999, "Activo", true);
+        Usuario admin = new Usuario("Admin", "Sist", "0000", "admin", 9999, "Activo", true); // Usuario administrador
 
-        banco.agregarUsuario(u1);
-        banco.agregarUsuario(u2);
-        banco.agregarUsuario(admin);
+        // Agrega usuarios al banco
+        banco.agregarUsuario(u1); 
+        banco.agregarUsuario(u2); 
+        banco.agregarUsuario(admin); 
     }
 
-    public void iniciar() {
+    public void iniciar() { // Método principal para iniciar la interfaz
         JOptionPane.showMessageDialog(null, "BIENVENIDO AL CAJERO AUTOMATICO");
 
-        while (true) {
-            String user = JOptionPane.showInputDialog(null, "Ingrese Usuario (o escriba 'salir' o Cancelar para cerrar):");
+        while (true) { // Bucle principal de inicio de sesión
+            String user = JOptionPane.showInputDialog(null, "Ingrese Usuario (o escriba 'salir' o Cancelar para cerrar):"); 
 
-            if (user == null || user.equalsIgnoreCase("salir")) {
-                break;
+            if (user == null || user.equalsIgnoreCase("salir")) { // Sale del sistema
+                break; 
             }
 
             Integer pin = solicitarEntero("Ingrese PIN para " + user + ":");
 
-            if (pin == null) {
+            if (pin == null) { 
                 continue; // Si cancela el PIN, vuelve a pedir usuario
             }
 
-            Usuario usuarioLogueado = cajero.iniciarSesion(user, pin);
+            Usuario usuarioLogueado = cajero.iniciarSesion(user, pin); // Lógica de autenticación
 
             if (usuarioLogueado != null) {
 
@@ -105,30 +106,30 @@ public class Menu {
                             "ACCESO DENEGADO.\nSu usuario se encuentra BLOQUEADO.\nContacte con la administración.",
                             "Cuenta Bloqueada",
                             JOptionPane.ERROR_MESSAGE);
-                    continue;
+                    continue; // Vuelve al inicio de sesión
                 }
 
                 JOptionPane.showMessageDialog(null, "Bienvenido, " + usuarioLogueado.getApellido() + " " + usuarioLogueado.getNombre());
-                if (usuarioLogueado.esAdmin()) {
-                    menuAdmin(usuarioLogueado);
+                if (usuarioLogueado.esAdmin()) { // Menú administrador
+                    menuAdmin(usuarioLogueado); 
                 } else {
                     menuUsuario(usuarioLogueado);
                 }
-            } else {
+            } else { // Falló autenticación
                 JOptionPane.showMessageDialog(null, "Credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
-    private void menuUsuario(Usuario u) {
+    private void menuUsuario(Usuario u) { // Menú para usuarios normales
         Cuenta[] cuentasDisponibles = new Cuenta[u.getCantCuentas()];
         for (int i = 0; i < u.getCantCuentas(); i++) {
             cuentasDisponibles[i] = u.getCuentas()[i];
         }
 
-        boolean cambiarCuenta = true;
+        boolean cambiarCuenta = true; // Controla si el usuario quiere cambiar de cuenta
 
-        while (cambiarCuenta) {
+        while (cambiarCuenta) { // Bucle para cambiar de cuenta
             Cuenta cuentaActual = (Cuenta) JOptionPane.showInputDialog(
                     null,
                     "Seleccione la cuenta con la que desea operar:",
@@ -139,12 +140,12 @@ public class Menu {
                     cuentasDisponibles[0]
             );
 
-            if (cuentaActual == null) {
+            if (cuentaActual == null) { // Si se cancela la selección, sale del menú de usuario
                 return;
             }
 
-            int opcion = -1;
-            while (opcion != 0 && opcion != 9) {
+            int opcion = -1; // Opción del menú de cuenta
+            while (opcion != 0 && opcion != 9) { 
 
                 String menuText = " Operando con: " + cuentaActual.getClass().getSimpleName() + " " + cuentaActual.getNumero() + " \n"
                         + "1. Consultar Saldo\n"
@@ -154,21 +155,21 @@ public class Menu {
                         + "0. Cerrar Sesión\n\n"
                         + "Elija opción:";
 
-                Integer inputOpcion = solicitarEntero(menuText);
+                Integer inputOpcion = solicitarEntero(menuText); // Solicita opción al usuario 
 
                 if (inputOpcion == null) {
                     opcion = 0;
                     cambiarCuenta = false;
                     break;
                 }
-                opcion = inputOpcion;
+                opcion = inputOpcion; 
 
-                switch (opcion) {
-                    case 1:
+                switch (opcion) { // Manejo de opciones
+                    case 1: // Consultar saldo
                         double saldo = cajero.consultarSaldo(cuentaActual);
                         JOptionPane.showMessageDialog(null, "Saldo actual: $" + saldo);
                         break;
-                    case 2:
+                    case 2: // Depositar
                         Double dep = solicitarMonto("Monto a depositar:");
                         if (dep != null) {
                             // Como solicitarMonto ya valida > 0, aquí solo ejecutamos
@@ -179,7 +180,7 @@ public class Menu {
                             }
                         }
                         break;
-                    case 3:
+                    case 3: // Extraer
                         Double ext = solicitarMonto("Monto a extraer:");
                         if (ext != null) {
                             int status = cajero.extraer(u, cuentaActual, ext);
@@ -196,22 +197,22 @@ public class Menu {
                             }
                         }
                         break;
-                    case 9:
+                    case 9: // Cambiar de cuenta
                         break;
-                    case 0:
+                    case 0: // Cerrar sesión
                         JOptionPane.showMessageDialog(null, "Cerrando sesión...");
                         cambiarCuenta = false;
                         break;
-                    default:
+                    default: // Opción inválida
                         JOptionPane.showMessageDialog(null, "Opción inválida.");
                 }
             }
         }
     }
 
-    private void menuAdmin(Usuario u) {
-        int opcion = -1;
-        while (opcion != 0) {
+    private void menuAdmin(Usuario u) { // Menú para administradores
+        int opcion = -1; 
+        while (opcion != 0) { 
             String menuText = "MENÚ ADMINISTRADOR\n"
                     + "1. Listar Usuarios\n"
                     + "2. Ordenar Usuarios (Burbujeo)\n"
@@ -223,27 +224,27 @@ public class Menu {
                     + "0. Salir\n\n"
                     + "Elija opción:";
 
-            Integer inputOpcion = solicitarEntero(menuText);
+            Integer inputOpcion = solicitarEntero(menuText); // Solicita opción al administrador
 
             if (inputOpcion == null) {
                 break;
             }
-            opcion = inputOpcion;
+            opcion = inputOpcion; // Asigna la opción ingresada
 
             switch (opcion) {
-                case 1:
+                case 1: // Listar usuarios
                     String listado = banco.listarUsuarios();
                     JOptionPane.showMessageDialog(null, listado, "Listado de Usuarios", JOptionPane.INFORMATION_MESSAGE);
                     break;
-                case 2:
+                case 2: // Ordenar por burbujeo
                     banco.ordenarUsuariosPorNumeroBurbujeo();
                     JOptionPane.showMessageDialog(null, "Usuarios ordenados correctamente por Burbujeo.");
                     break;
-                case 3:
+                case 3: // Ordenar por selección
                     banco.ordenarUsuariosPorNumeroSeleccion();
                     JOptionPane.showMessageDialog(null, "Usuarios ordenados correctamente por Selección.");
                     break;
-                case 4:
+                case 4: // Cargar efectivo al cajero
                     Double carga = solicitarMonto("Monto a cargar:");
                     if (carga != null) {
                         if (cajero.cargarEfectivo(carga)) {
@@ -253,21 +254,21 @@ public class Menu {
                         }
                     }
                     break;
-                case 5:
+                case 5: // Consultar efectivo del cajero
                     double efectivo = cajero.getEfectivoDisponible();
                     JOptionPane.showMessageDialog(null, "Efectivo disponible en el cajero: $" + efectivo);
                     break;
-                case 6:
+                case 6: // Activar/Bloquear usuario
                     String listadoBloqueo = banco.listarUsuarios();
                     String idBusqueda = JOptionPane.showInputDialog(null, listadoBloqueo + "\n\nIngrese eluserIDde Usuario a modificar:");
-                    if (idBusqueda != null) {
+                    if (idBusqueda != null) { 
                         Usuario uTemp = banco.buscarUsuarioPorNro(idBusqueda);
 
                         if (uTemp != null) {
                             if (uTemp.esAdmin()) {
                                 JOptionPane.showMessageDialog(null, "Error: No se puede bloquear a un Administrador.", "Acción Denegada", JOptionPane.WARNING_MESSAGE);
-                            } else {
-                                if (uTemp.getEstado().equalsIgnoreCase("Activo")) {
+                            } else { 
+                                if (uTemp.getEstado().equalsIgnoreCase("Activo")) { 
                                     uTemp.setEstado("Bloqueado");
                                     JOptionPane.showMessageDialog(null, "Usuario " + uTemp.getNombre() + " ha sido BLOQUEADO.");
                                 } else {
@@ -280,7 +281,7 @@ public class Menu {
                         }
                     }
                     break;
-                case 7:
+                case 7: // Cambiar PIN de usuario
                     String listadoPin = banco.listarUsuarios();
                     String idPin = JOptionPane.showInputDialog(null, listadoPin + "\n\nIngrese eluserIDde Usuario para cambio de PIN:");
                     if (idPin != null) {
@@ -298,7 +299,7 @@ public class Menu {
                         }
                     }
                     break;
-                case 0:
+                case 0: // Salir
                     JOptionPane.showMessageDialog(null, "Saliendo del menú de administrador...");
                     break;
                 default:
@@ -307,23 +308,23 @@ public class Menu {
         }
     }
 
-    public static void main(String[] args) {
-        new Menu().iniciar();
+    public static void main(String[] args) { // Iniciar la aplicación
+        new Menu().iniciar(); 
     }
 
-    public Banco getBanco() {
+    public Banco getBanco() { // Getter para el banco
         return this.banco;
     }
 
-    public void setBanco(Banco banco) {
+    public void setBanco(Banco banco) { // Setter para el banco
         this.banco = banco;
     }
 
-    public CajeroAutomatico getCajero() {
+    public CajeroAutomatico getCajero() { // Getter para el cajero
         return this.cajero;
     }
 
-    public void setCajero(CajeroAutomatico cajero) {
+    public void setCajero(CajeroAutomatico cajero) { // Setter para el cajero
         this.cajero = cajero;
     }
 }

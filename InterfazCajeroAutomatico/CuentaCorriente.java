@@ -24,17 +24,17 @@ public class CuentaCorriente extends Cuenta {
         return false;
     }
 
-    public double getDescubiertoPermitido() {
+    public double getDescubiertoPermitido() { // Devuelve el descubierto permitido.
         return this.descubiertoPermitido;
     }
 
-    public void setDescubiertoPermitido(double descubiertoPermitido) {
+    public void setDescubiertoPermitido(double descubiertoPermitido) { // Permite modificar el descubierto.
         this.descubiertoPermitido = descubiertoPermitido;
     }
 
     // Extiende la representación de la cuenta base para mostrar el descubierto.
     @Override 
-    public String toString() {
+    public String toString() { 
         return super.toString() + " (CC - Descubierto: " + this.descubiertoPermitido + ")";
     }
 }

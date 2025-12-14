@@ -1,12 +1,12 @@
 package InterfazCajeroAutomatico;
 
-public class Banco {
+public class Banco { // Clase que representa un banco con múltiples usuarios.
 
-    private String nombre;
+    private String nombre; // Nombre del banco.
     private Usuario[] usuarios; // Arreglo para almacenar todos los usuarios/clientes del banco.
     private int cantUsuarios; // Limite usuarios actual
 
-    public Banco(String nombre, int capacidad) {
+    public Banco(String nombre, int capacidad) { // Inicializa el banco con un nombre y capacidad máxima de usuarios.
         this.nombre = nombre;
         this.usuarios = new Usuario[capacidad]; // Arreglo para almacenar usuarios
         this.cantUsuarios = 0;

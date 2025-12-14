@@ -52,51 +52,51 @@ public class Usuario extends Persona {
         return null;
     }
 
-    public Cuenta[] getCuentas() {
+    public Cuenta[] getCuentas() { // Devuelve todas las cuentas del usuario
         return this.cuentas;
     }
 
-    public int getCantCuentas() {
+    public int getCantCuentas() { // Devuelve la cantidad de cuentas del usuario
         return this.cantCuentas;
     }
 
-    public void cambiarPin(int nuevoPin) {
+    public void cambiarPin(int nuevoPin) { // Permite cambiar el PIN del usuario
         this.pin = nuevoPin;
     }
 
-    public String getEstado() {
+    public String getEstado() { // Devuelve el estado del usuario
         return this.estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(String estado) { // Modifica el estado del usuario
         this.estado = estado;
     }
 
-    public boolean esAdmin() {
+    public boolean esAdmin() { // Indica si el usuario es administrador
         return this.admin;
     }
 
-    public String getNroCuenta() {
+    public String getNroCuenta() { // Devuelve el número de cuenta del usuario
         return this.nroCuenta;
     }
 
-    public void setNroCuenta(String nroCuenta) {
+    public void setNroCuenta(String nroCuenta) { // Modifica el número de cuenta del usuario
         this.nroCuenta = nroCuenta;
     }
 
-    public int getPin() {
+    public int getPin() { // Devuelve el PIN del usuario
         return this.pin;
     }
 
-    public void setPin(int pin) {
+    public void setPin(int pin) { // Modifica el PIN del usuario
         this.pin = pin;
     }
 
-    public boolean isAdmin() {
+    public boolean isAdmin() { // Getter para el atributo admin
         return this.admin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(boolean admin) { // Setter para el atributo admin
         this.admin = admin;
     }
 

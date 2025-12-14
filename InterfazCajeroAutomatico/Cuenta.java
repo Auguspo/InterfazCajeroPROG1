@@ -3,10 +3,10 @@ package InterfazCajeroAutomatico;
 // Clase base para todas las cuentas (Caja de Ahorro, Cuenta Corriente, etc.).
 public class Cuenta { 
 
-    private String numero;
+    private String numero; // Número único que identifica la cuenta.
     private double saldo; // Atributo principal: el saldo actual de la cuenta.
 
-    public Cuenta(String numero, double saldoInicial) {
+    public Cuenta(String numero, double saldoInicial) {  // Inicializa número y saldo inicial.
         this.numero = numero;
         this.saldo = saldoInicial;
     }
@@ -15,7 +15,7 @@ public class Cuenta {
         return this.saldo;
     }
 
-    public String getNumero() {
+    public String getNumero() { // Getter para consultar el número de cuenta.
         return this.numero;
     }
 
@@ -31,7 +31,7 @@ public class Cuenta {
         return false;
     }
 
-    public void setNumero(String numero) {
+    public void setNumero(String numero) { // Setter para modificar el número de cuenta.
         this.numero = numero;
     }
 

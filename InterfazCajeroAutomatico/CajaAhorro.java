@@ -23,7 +23,7 @@ public class CajaAhorro extends Cuenta {
         return false;
     }
 
-    public double getLimiteExtraccion() {
+    public double getLimiteExtraccion() { // Devuelve el límite de extracción.
         return this.limiteExtraccion;
     }
 

@@ -2,10 +2,10 @@ package InterfazCajeroAutomatico;
 
 public class CajeroAutomatico {
 
-    private Banco banco;
+    private Banco banco; // Banco asociado al cajero.
     private double efectivoDisponible; // Dinero físico actual en el cajero (restricción de hardware).
 
-    public CajeroAutomatico(Banco banco, double efectivoInicial) {
+    public CajeroAutomatico(Banco banco, double efectivoInicial) { // Inicializa el banco y el efectivo.
         this.banco = banco;
         this.efectivoDisponible = efectivoInicial;
     }
@@ -39,7 +39,7 @@ public class CajeroAutomatico {
         }
     }
 
-    public boolean depositar(Usuario u, Cuenta c, double monto) {
+    public boolean depositar(Usuario u, Cuenta c, double monto) { // Realiza un depósito en la cuenta.
         if (monto > 0) {
             c.depositar(monto);
             this.efectivoDisponible += monto;
@@ -50,7 +50,7 @@ public class CajeroAutomatico {
         }
     }
 
-    public double consultarSaldo(Cuenta c) {
+    public double consultarSaldo(Cuenta c) { // Devuelve el saldo actual de la cuenta.
         return c.getSaldo();
     }
 
@@ -63,11 +63,11 @@ public class CajeroAutomatico {
         return false;
     }
 
-    public Banco getBanco() {
+    public Banco getBanco() { // Devuelve el banco asociado al cajero.
         return this.banco;
     }
 
-    public void setBanco(Banco banco) {
+    public void setBanco(Banco banco) { // Permite cambiar el banco asociado al cajero.
         this.banco = banco;
     }
 
@@ -76,7 +76,7 @@ public class CajeroAutomatico {
         return this.efectivoDisponible;
     }
 
-    public void setEfectivoDisponible(double efectivoDisponible) {
+    public void setEfectivoDisponible(double efectivoDisponible) { // Permite modificar el efectivo disponible.
         this.efectivoDisponible = efectivoDisponible;
     }
 }

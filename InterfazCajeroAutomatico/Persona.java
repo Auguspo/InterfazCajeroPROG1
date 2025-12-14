@@ -14,39 +14,33 @@ public class Persona { // Clase base que representa a una persona en el sistema.
         this.dni = dni;
     }
 
-    // Métodos 'getter' para obtener el nombre (Selectores).
-    public String getNombre() {
+    public String getNombre() { // Devuelve el nombre de la persona
         return this.nombre;
     }
 
-    // Métodos 'setter' para modificar el nombre (Mutadores).
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre) { // Modifica el nombre de la persona
         this.nombre = nombre;
     }
 
-    // Métodos 'getter' para obtener el apellido (Selectores).
-    public String getApellido() {
+    public String getApellido() { // Devuelve el apellido de la persona
         return this.apellido;
     }
 
-    // Métodos 'setter' para modificar el apellido (Mutadores).
-    public void setApellido(String apellido) {
+    public void setApellido(String apellido) { // Modifica el apellido de la persona
         this.apellido = apellido;
     }
 
-    // Métodos 'getter' para obtener el DNI (Selectores).
-    public String getDni() {
+    public String getDni() { // Devuelve el DNI de la persona
         return this.dni;
     }
 
-    // Métodos 'setter' para modificar el DNI (Mutadores).
-    public void setDni(String dni) {
+    public void setDni(String dni) { // Modifica el DNI de la persona
         this.dni = dni;
     }
 
     // Sobreescribe el método para una representación de texto legible del objeto.
-    @Override
-    public String toString() {
-        return this.nombre + " " + this.apellido + " (DNI: " + this.dni + ")";
+    @Override 
+    public String toString() { 
+        return this.nombre + " " + this.apellido + " (DNI: " + this.dni + ")"; 
     }
 }
