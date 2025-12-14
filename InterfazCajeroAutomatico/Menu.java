@@ -63,11 +63,11 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
 
         return valor;
     }
-    
+
     // Nuevo método para solicitar texto no vacío
     private String solicitarString(String mensaje, String titulo) {
         String input;
-        do { 
+        do {
             input = JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.QUESTION_MESSAGE);
             if (input == null) { // Cancelación
                 return null;
@@ -79,31 +79,40 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
         } while (input.isEmpty());
         return input;
     }
-    
+
     // Lógica para añadir un nuevo usuario.
     private void añadirUsuarioCliente() {
         // 1. Solicitud de datos básicos
         String nombre = solicitarString("Ingrese Nombre:", "Nuevo Cliente");
-        if (nombre == null) return;
-        
+        if (nombre == null) {
+            return;
+        }
+
         String apellido = solicitarString("Ingrese Apellido:", "Nuevo Cliente");
-        if (apellido == null) return;
-        
+        if (apellido == null) {
+            return;
+        }
+
         String dni;
         boolean dniDuplicado;
 
         do {
             dniDuplicado = false;
             dni = solicitarString("Ingrese DNI:", "Nuevo Cliente");
-            
-            if (dni == null) return;
+
+            if (dni == null) {
+                return;
+            }
 
             if (banco.buscarUsuario(dni, "dni") != null) {
                 JOptionPane.showMessageDialog(null, "Error: El DNI ya existe en el sistema.", "DNI Duplicado", JOptionPane.ERROR_MESSAGE);
                 dniDuplicado = true;
+            } else if (dni.trim().length() > 9 || dni.trim().length() < 8) {
+                JOptionPane.showMessageDialog(null, "Error: DNI cantidad de caracteres invalido.", "DNI Inválido", JOptionPane.ERROR_MESSAGE);
+                dniDuplicado = true;
             }
         } while (dniDuplicado);
-        
+
         // 2. Generación automática de UserID
         String nroCuenta = "user" + (banco.getCantUsuarios() + 1);
         int intentos = 0;
@@ -112,18 +121,32 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
             nroCuenta = "user" + (banco.getCantUsuarios() + 1 + intentos);
             intentos++;
         }
-        
+
         // 3. Solicitud de PIN
-        Integer pin = solicitarEntero("El UserID asignado es: " + nroCuenta + "\nIngrese PIN (4 dígitos numéricos):");
-        if (pin == null) return;
+        Integer pin;
+        do {
+            //Verificamos que el PIN sea numérico y tenga 4 dígitos
+            pin = solicitarEntero("El UserID asignado es: " + nroCuenta + "\nIngrese PIN (4 dígitos numéricos):");
+
+            if (pin == null) {
+                return;
+            }
+
+            if (String.valueOf(pin).length() != 4) {
+                JOptionPane.showMessageDialog(null, "El número debe tener exactamente 4 dígitos.", "Error de longitud", JOptionPane.ERROR_MESSAGE);
+            } else {
+                break; // El PIN es correcto (es entero y tiene 4 dígitos)
+            }
+
+        } while (true);
 
         // 4. Creación del usuario (por defecto: Activo, no administrador)
         Usuario nuevoUsuario = new Usuario(nombre, apellido, dni, nroCuenta, pin, "Activo", false);
-        
+
         // 5. Selección de cuentas a abrir
         boolean cuentaCorrienteAbierta = false;
         boolean cajaAhorroAbierta = false;
-        
+
         // a) Cuenta Corriente
         String abrirCC = solicitarString("¿Desea abrir una Cuenta Corriente (S/N)?", "Selección de Cuentas");
         if (abrirCC != null && abrirCC.equalsIgnoreCase("S")) {
@@ -133,7 +156,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                 cuentaCorrienteAbierta = true;
             }
         }
-        
+
         // b) Caja de Ahorro
         String abrirCA = solicitarString("¿Desea abrir una Caja de Ahorro (S/N)?", "Selección de Cuentas");
         if (abrirCA != null && abrirCA.equalsIgnoreCase("S")) {
@@ -146,20 +169,19 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
 
         // 6. Finalización y validación de cuentas
         if (banco.agregarUsuario(nuevoUsuario)) {
-            String mensajeExito = "Usuario/Cliente agregado con éxito. UserID: " + nroCuenta + "\n";
+            String mensajeExito = "Usuario/Cliente agregado con éxito. \n UserID: " + nroCuenta + "\n";
             if (!cuentaCorrienteAbierta && !cajaAhorroAbierta) {
                 mensajeExito += "ADVERTENCIA: No se asignó ninguna cuenta al usuario.";
             } else {
-                mensajeExito += "Cuentas abiertas: " 
-                              + (cuentaCorrienteAbierta ? "Cuenta Corriente | " : "") 
-                              + (cajaAhorroAbierta ? "Caja de Ahorro" : "");
+                mensajeExito += "Cuentas abiertas: "
+                        + (cuentaCorrienteAbierta ? "Cuenta Corriente | " : "")
+                        + (cajaAhorroAbierta ? "Caja de Ahorro" : "");
             }
             JOptionPane.showMessageDialog(null, mensajeExito, "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "Error al agregar usuario (límite alcanzado o error interno).", "Error de Creación", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 
     private void cargarDatosPrueba() { // Carga de usuarios y cuentas de prueba
         Usuario u1 = new Usuario("Juan", "Perez", "12345678", "user1", 1234, "Activo", false);
@@ -168,7 +190,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
 
         Usuario u2 = new Usuario("Ana", "Gomez", "87654321", "user2", 4321, "Activo", false);
         u2.agregarCuenta(new CajaAhorro("CA-002", 7000, 3000));
-        
+
         Usuario u3 = new Usuario("Carlos", "García", "23456789", "user3", 5678, "Activo", false);
         u3.agregarCuenta(new CajaAhorro("CA-003", 2000, 1000));
 
@@ -223,6 +245,15 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
     }
 
     private void menuUsuario(Usuario u) { // Menú para usuarios normales
+
+        if (u.getCantCuentas() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Hola " + u.getNombre() + ".\nNo tiene cuentas habilitadas para operar.\nPor favor contacte al banco.",
+                    "Sin cuentas abiertas",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         Cuenta[] cuentasDisponibles = new Cuenta[u.getCantCuentas()];
         for (int i = 0; i < u.getCantCuentas(); i++) {
             cuentasDisponibles[i] = u.getCuentas()[i];
@@ -322,6 +353,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                     + "5. Consultar Efectivo Cajero\n"
                     + "6. Activar/Bloquear Usuario\n"
                     + "7. Cambiar PIN de Usuario\n"
+                    + "8. Busqueda de Usuario\n"
                     + "9. Agregar nuevo usuario/cliente\n" // Nueva opción
                     + "0. Salir\n\n"
                     + "Elija opción:";
@@ -362,11 +394,11 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                     String busquedaBloqueo = JOptionPane.showInputDialog(null, banco.listarUsuarios() + "\n\nIngrese el **UserID** o **DNI** del Usuario a modificar:");
                     if (busquedaBloqueo != null) { // Búsqueda
                         Usuario uTemp = banco.buscarUsuario(busquedaBloqueo, "nroCuenta");
-                        if (uTemp == null) { 
+                        if (uTemp == null) {
                             uTemp = banco.buscarUsuario(busquedaBloqueo, "dni");
                         }
 
-                        if (uTemp != null) { 
+                        if (uTemp != null) {
                             if (uTemp.esAdmin()) {
                                 JOptionPane.showMessageDialog(null, "Error: No se puede bloquear a un Administrador.", "Acción Denegada", JOptionPane.WARNING_MESSAGE);
                             } else {
@@ -390,7 +422,7 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                         if (uTemp == null) {
                             uTemp = banco.buscarUsuario(busquedaPin, "dni");
                         }
-                                        
+
                         if (uTemp != null) {
 
                             Integer nuevoPin = solicitarEntero("Ingrese el NUEVO PIN (Numérico) para " + uTemp.getApellido() + " " + uTemp.getNombre() + ":");
@@ -404,11 +436,43 @@ public class Menu { // Clase principal que maneja la interfaz del cajero automá
                         }
                     }
                     break;
+                case 8:
+                    //  Busqueda de usuario
+                    String datoBusqueda = JOptionPane.showInputDialog("Ingrese UserID o DNI a buscar:");
+
+                    if (datoBusqueda != null && !datoBusqueda.trim().isEmpty()) {
+                        // 1. Buscamos por ID
+                        Usuario uEnc = banco.buscarUsuario(datoBusqueda, "nroCuenta");
+
+                        // 2. Si no está, buscamos por DNI
+                        if (uEnc == null) {
+                            uEnc = banco.buscarUsuario(datoBusqueda, "dni");
+                        }
+
+                        if (uEnc != null) {
+                            String info = "<html><pre>"
+                                    + "-----------------------------------\n"
+                                    + "       DETALLE DE USUARIO          \n"
+                                    + "-----------------------------------\n"
+                                    + "Nombre:    " + uEnc.getApellido() + ", " + uEnc.getNombre() + "\n"
+                                    + "DNI:       " + uEnc.getDni() + "\n"
+                                    + "Usuario:   " + uEnc.getNroCuenta() + "\n"
+                                    + "Estado:    " + uEnc.getEstado() + "\n"
+                                    + "Cuentas:   " + uEnc.getCantCuentas() + "\n"
+                                    + "Permisos:  " + (uEnc.esAdmin() ? "ADMINISTRADOR" : "CLIENTE") + "\n"
+                                    + "-----------------------------------</pre></html>";
+
+                            JOptionPane.showMessageDialog(null, info, "Usuario Encontrado", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se encontró ningún usuario con ese dato.", "Sin resultados", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    break;
                 case 9: // Agregar nuevo usuario/cliente
                     añadirUsuarioCliente();
                     break;
                 case 0: // Salir
-                    JOptionPane.showMessageDialog(null, "Saliendo del menú de administrador...");
+                    JOptionPane.showMessageDialog(null, "Saliendo del menú de administrador");
                     break;
                 default:
                     JOptionPane.showMessageDialog(null, "Opción inválida.");
